@@ -1,0 +1,57 @@
+<script>
+
+function enterPressed(){
+    value = document.querySelector("#txtSearch").value
+    addUser(value);
+}
+
+var checkUsers = firebase.database().ref("users")
+checkUsers.on('value', function(snapshot){
+    user = snapshot.val();
+    print(user);
+})
+
+var theDiv = document.getElementById("users");
+
+function print(user){
+    usersList = []
+    for(i in user){
+    usersList.push(i)
+}
+//logUserList();
+addUsersToPage();
+}
+
+/*function logUserList(){
+    for(i in usersList){
+        console.log(usersList[i])
+    }
+}*/
+
+
+function addUsersToPage(){
+    userElement = ""
+
+    for(i in usersList){
+        userElement += ("<li>" + usersList[i] + " <button id='"+ "d" + "' class='"+ i +"' onclick='deleteUser(this.class, this.id)'  >Delete</button> <button id='" + "c" + "' class='" + i + "' onclick='deleteUser(this.class, this.id)' >Select user</button> " + "</li>") 
+
+    }
+    theDiv.innerHTML = ""
+    theDiv.innerHTML += "<ul>"+ userElement +"</ul>";
+}
+
+function deleteUser(id, user){
+    userName = usersList[parseInt(user , 10)]
+    ok = confirm('Are you sure you would like to delete the user "' + userName  + '"')
+    if (ok) {
+        toDelete = firebase.database().ref('users/' + userName)
+        toDelete.set(null);
+    }
+}
+
+function addUser(input){
+    firebase.database().ref('users/' + input).set(3);
+}
+
+
+</script>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <title>Quiz</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel='icon' href="../QuestionFavicon2.png">
+    <style>
+      *,  *::before, *::after {
+    box-sizing: border-box;
+    font-family: "Lucida Console", "arial";
+    color:white;
+}
+
+img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+    display:none;
+    }
+
+:root{
+    --hue-neutral: 200;
+    --hue-wrong: 0;
+    --hue-correct:145;
+}
+
+body {
+    --hue: var(--hue-neutral);
+    padding: 0;
+    background-color:hsl(var(--hue), 100%, 30%);
+    font-size: 4vw;
+    text-align: center;
+
+    background-image: url("../question-mark3.png");
+  background-repeat: repeat;
+  background-size: 5em 5em;
+}
+
+@media only screen and (orientation: landscape) {
+    body {
+      font-size: 4vh;
+    }
+  }
+
+
+body.correct{
+    --hue: var(--hue-correct) !important;
+}
+
+body.wrong{
+    --hue: var(--hue-wrong) !important;
+}
+
+.rainbow { 
+    background: repeating-linear-gradient(-45deg,);
+  }
+
+.top{
+    font-size: 1.4em;
+    color: rgb(86, 255, 122);
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+} 
+
+.container {
+    margin-top: 20px;
+    margin-left:auto;
+    margin-right: auto;
+    max-width: 900%;
+    background-color: rgba(34, 34, 34, 0.7);
+    border-radius: 5px;
+    padding: 10px;
+
+    display: inline-block;
+  vertical-align: top;
+}
+
+#shift-left{
+    padding-left: 6vw;
+}
+
+.container-signin{
+    margin-left:auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: rgba(34, 34, 34, 0.7);
+    border-radius: 5px;
+    padding: 10px;
+    position: auto;
+}
+
+.leaderboard-container{
+    text-align: left;
+    margin-left:10vw;
+    margin-right: 10vw;
+    max-width: 900%;
+    margin-top: 20px;
+    background-color: rgba(34, 34, 34, 0.7);
+    border-radius: 5px;
+    padding: 10px;
+    position: auto;
+}
+
+.tabs{
+    color: yellowgreen;
+}
+
+.btn-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 46vw);
+    gap:10px;
+    margin:20px 0;
+}
+
+.question {
+    font-size: 1.4em;
+}
+
+.btn{
+    --hue:var(--hue-neutral);
+    border: 5px solid hsl(var(--hue), 100%,30%);
+    background-color: hsl(var(--hue), 100%, 50%);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    outline: none;
+    font-size: 1.2em;
+    word-wrap:break-word;
+}
+
+/*
+@media screen and (max-width : 2000px){
+    .btn {
+        font-size: 50px;
+    }
+}
+@media screen and (max-width : 1204px){
+    .btn {
+        font-size: 20px;
+    }
+}
+*/
+.btn:hover{
+    border-color: black;
+}
+
+.btn.correct{
+    --hue: var(--hue-correct);
+    color:black;
+}
+
+.btn.wrong{
+    --hue: var(--hue-wrong);
+}
+
+.start-btn, .next-btn {
+    font-size:1.5em;
+    font-weight:bold;
+    padding: 10px 20px;
+}
+.controls{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display:none;
+}
+    </style>
+</head>
+<body>
+
+  
+    <div class="top" id="topStart">Ethan's Quiz!</div>
+    <div id="signedIn"></div>
+    <div class="leaderboard-container hide" id = "leaderboard-con">
+      <p style="text-align: center;">Leaderboard<p>
+      <div id="leaderboard">
+        <div id="shift-left">
+
+        </div>
+    <div id="leaderboard"></div>
+    </div>
+    </div>
+
+    <div id="questionOwner" class="top"></div>
+    <div class="container">
+        <div id="question-container" class="hide">
+            <div id="question" class="question">Question</div>
+            <div id="answer-buttons" class="btn-grid">
+                <button class="btn">Answer 1</button>
+                <button class="btn">Answer 2</button>
+                <button class="btn">Answer 3</button>
+                <button class="btn">Answer 4</button>
+            </div>
+        </div>
+        <div id="correct-message"></div>
+        <div class="controls">
+            <button id="start-btn" class="start-btn btn">Start</button>
+            <button id="next-btn" class="next-btn btn hide">Next</button>
+        </div>
+    </div>
+    <audio id="audio-c" src="./correct.wav"></audio>
+    <audio id="audio-w" src="./wrong.wav"></audio>
+
+<div id="displayQuestions"></div>
+
+
+
+
+
+<div class="container-signin" id ="toHide">
+  <div id="question-container-signin">
+  <div id = "signedIn">
+      <p>Choose your user or create one to have your high score displayed.</p>
+  </div>
+
+
+<div id="signInDiv">
+
+  <form onSubmit="return false;">
+      <input type = "text"
+         id = "txtSearch" 
+         onkeydown = "if (event.keyCode == 13)
+                          document.getElementById('btnSearch').click()"    
+  />
+  
+  <input type = "button"
+         id = "btnSearch"
+         value = "Add user"
+         class = "btn"
+         onclick = "enterPressed();"
+  />
+
+
+  <div id="users">
+      <p>Loading...</p>
+  </div>
+
+</div>
+
+    
+</body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+    // Set the configuration for your app
+  // TODO: Replace with your project's config object
+  var config = {
+    apiKey: "apiKey",
+    authDomain: "projectId.firebaseapp.com",
+    databaseURL: "https://quiz-63bb7.firebaseio.com/",
+    storageBucket: "bucket.appspot.com"
+  };
+  firebase.initializeApp(config);
+
+  // Get a reference to the database service
+  var database = firebase.database();
+</script>
+
+<script>
+  const startButton = document.getElementById("start-btn")
+const nextButton = document.getElementById("next-btn")
+const questionContainerElement = document.getElementById("question-container")
+const questionElement = document.getElementById("question")
+const answerButtonsElement = document.getElementById("answer-buttons")
+const questionOwner = document.getElementById("questionOwner")
+const correctMessage = document.getElementById("correct-message")
+const leaderboardDiv = document.getElementById("shift-left");
+
+let shuffledQuestions, currentQuestionIndex
+let answered = false
+let correctAnswerCounter = 0;
+let totalQuestions
+
+
+startButton.addEventListener("click", startGame)
+nextButton.addEventListener("click", () => {
+    currentQuestionIndex++
+    setNextQuestion()
+})
+
+function startGame(){
+    console.log("Started")
+    startButton.classList.add("hide")
+    shuffledQuestions = questions.sort(() => Math.random() - .5)
+    currentQuestionIndex = 0
+    questionContainerElement.classList.remove("hide")
+    document.getElementById("leaderboard-con").classList.add("hide");
+    document.body.id = ("rainbow");
+    gameLoop();
+    setNextQuestion();
+}
+
+function setNextQuestion() {
+    answered = false;
+    document.body.id = ("rainbow");
+    gameLoop();
+    correctMessage.classList.add("hide")
+    resetState()
+    showQuestion(shuffledQuestions[currentQuestionIndex])
+} 
+
+function showQuestion(question){
+    document.getElementById("topStart").classList.add("hide")
+    questionOwner.innerText = question.owner + " made this question!"
+    questionElement.innerText = question.question
+    question.answers.forEach(answer => {
+        const button = document.createElement("button")
+        button.innerText = answer.text
+        button.classList.add("btn")
+        if(answer.correct){
+            button.dataset.correct = answer.correct
+        }
+        button.addEventListener("click", selectAnswer)
+        answerButtonsElement.appendChild(button)
+    })
+}
+
+function resetState(){
+    clearStatusClass(document.body)
+    nextButton.classList.add("hide")
+    while (answerButtonsElement.firstChild){
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild)
+    }
+}
+
+function selectAnswer(e){
+    if(answered == false){
+        answered = true
+        const selectedButton = e.target
+        if(selectedButton.dataset.correct){ //Gets if selected button was correct or not.
+            console.log("Correct")
+            correctMessage.innerText = "Correct!"
+            correctAnswerCounter++
+        }else{
+            console.log("Wrong")
+            correctMessage.innerText = "Incorrect!"
+        }
+        const correct = selectedButton.dataset.correct
+        setStatusClass(document.body, correct)
+        Array.from(answerButtonsElement.children).forEach(button => {
+            setStatusClass(button, button.dataset.correct)
+        })
+        if (shuffledQuestions.length > currentQuestionIndex + 1) {
+            nextButton.classList.remove("hide")
+            correctMessage.classList.remove("hide")
+        } else {
+            questionContainerElement.classList.add("hide")
+            startButton.innerText = "Restart"
+            startButton.classList.remove("hide")
+            correctMessage.classList.remove("hide")
+            percentScore = Math.round(correctAnswerCounter/totalQuestions * 100)
+            correctMessage.innerText = "You got " + correctAnswerCounter + "/"+ totalQuestions + " which is " + percentScore + "%"
+            correctAnswerCounter = 0
+            document.getElementById("questionOwner").classList.add("hide")
+            document.getElementById("leaderboard-con").classList.remove("hide");
+            document.body.id = ("rainbow");
+            gameLoop();
+            if (userName){
+            uploadScore(percentScore);
+            }
+        }
+    }
+}
+
+function setStatusClass(element, correct) {
+    clearStatusClass(element)
+    if (correct) {
+        document.body.id = "none";
+        document.body.style.backgroundColor = "";
+        element.classList.add("correct")
+    } else{
+        document.body.id = "none";
+        document.body.style.backgroundColor = "";
+        element.classList.add("wrong")
+    }
+}
+
+function clearStatusClass(element){
+    element.classList.remove("correct")
+    element.classList.remove("wrong")
+}
+
+const questions = []
+
+/*
+function displayQuestions(questionsDatabase){
+    div = document.getElementById("displayQuestions")
+    console.log(questionsDatabase)
+    div.innerHTML = "<p>"+ JSON.stringify(questionsDatabase) +"</p>"
+}
+*/
+
+var checkQuestions = firebase.database().ref("questions")
+checkQuestions.on('value', function(snapshot){
+    question = snapshot.val();
+    let edited = Object.values(question)
+    console.log(edited)
+    for(i in edited){
+        questions.push(edited[i]);
+    }
+    totalQuestions = edited.length
+    console.log(totalQuestions + " UAA")
+    //displayQuestions(questions);
+})
+
+let savedScores;
+let getUserScores = firebase.database().ref("users")
+getUserScores.on('value', function(snapshot){
+    savedScores = snapshot.val();
+    console.log(savedScores)
+})
+
+usersObject = "";
+var checkUsers = firebase.database().ref("users")
+checkUsers.on('value', function(snapshot){
+    user = snapshot.val();
+    usersObject = user
+    print(user);
+    leaderboardArray(user);
+})
+
+var theDiv = document.getElementById("users");
+usersList = []
+function print(user){
+    usersList = []
+    for(i in user){
+    usersList.push(i)
+}
+//logUserList();
+addUsersToPage();
+}
+
+function addUsersToPage(){
+    userElement = ""
+
+    for(i in usersList){
+        console.log(i)
+        userElement += ("<li>" + usersList[i] + " <button id='"+ "d" + "' class='btn red' onclick='deleteUser(this.id, "+i+")'  >Delete</button> <button id='" + "s" + "' class='btn green' onclick='deleteUser(this.id, "+i+")' >Select user</button> " + "</li>") 
+    }
+    theDiv.innerHTML = ""
+    theDiv.innerHTML += "<ul>"+ userElement +"</ul>";
+}
+
+let userName;
+function deleteUser(id, user){
+    //let user = document.getElementById(id).className
+    //console.log(id)
+    console.log(id)
+    userName = usersList[parseInt(user , 10)]
+    //console.log(usersList)
+    //console.log(userName)
+
+    if(id == "s"){
+        console.log("It's a s")
+        signIn(userName)
+    }
+
+    if(id == "d"){
+        ok = confirm('Are you sure you would like to delete the user "' + userName  + '"')
+        if (ok) {
+            toDelete = firebase.database().ref('users/' + userName)
+            toDelete.set(null);
+        }
+    }
+}
+
+signedIn = ""
+function signIn(userValue){
+    signedIn = userName
+    var text = document.getElementById("signedIn");
+    text.innerHTML = 'You are signed in as "' + userName + '"'
+    document.getElementById("toHide").style.display = "none"
+}
+
+function uploadScore(scorePercent){
+    console.log(usersObject[userName])
+    console.log(scorePercent)
+    console.log(usersObject[userName] < scorePercent)
+    if (usersObject[userName] < scorePercent){
+        databaseScore = firebase.database().ref('users/' + userName)
+        databaseScore.set(scorePercent)
+    }
+}
+
+function leaderboardArray(users){
+    console.log(users)
+    leaderboard = []
+    for(i in users){
+        console.log("i")
+        leaderboard.push(
+            {
+                name: i,
+                score: users[i]
+            }
+        )
+    }
+    console.log(leaderboard)
+    sortedLeaderboard = leaderboard.sort((a,b) => b.score - a.score)
+    console.log(sortedLeaderboard)
+    displayLeaderboard(sortedLeaderboard)
+}
+
+function displayLeaderboard(leaderboard){
+    leaderboardDiv.innerHTML = ""
+    leaderboardToDiv = ""
+    leaderboardToDiv = "<ol class='tabs'>"
+    for(i = 0; i< leaderboard.length ; i++){
+        console.log(leaderboard[i].score)
+        leaderboardToDiv += "<li>"+ leaderboard[i].score + "% : " + leaderboard[i].name + "</li>"
+        console.log("hi")
+    }
+    leaderboardToDiv += "</ol>"
+    leaderboardDiv.innerHTML = leaderboardToDiv
+    console.log(leaderboardDiv.innerHTML)
+    console.log(leaderboardToDiv)
+}
+
+colorChange = 0
+function gameLoop(){
+    window.requestAnimationFrame(gameLoop);
+    if (colorChange < 360){
+        colorChange += 0.05;
+    }else{
+        colorChange = 0;
+    }
+    if(document.getElementById("rainbow") != null){
+        document.getElementById("rainbow").style.backgroundColor = "hsl("+colorChange+", 100%, 40%)";
+    }
+  }
+
+document.body.id = ("rainbow");
+gameLoop();
+</script>
+</html> 

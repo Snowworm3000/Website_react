@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel='icon' href="../QuestionFavicon2.png">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="964614107255-nvqs4nibdt8t4otm19r7a22qqdbn4ihl.apps.googleusercontent.com">
+</head>
+<body>
+  <div class="header">
+    <a href="javascript:anchor('home')">Home</a>
+    <div class="header-right">
+      <a href="javascript:anchor('quiz')">Quiz</a> 
+      <a href="javascript:anchor('quizM')">Quiz maker</a>
+      <a id="login" href="javascript:anchor('login')">Login</a>
+      <a class="active" id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+      </div>
+    </div>
+
+    <div class="container">
+        <div id="question-container">
+        <div id = "signedIn">
+            <p>Pick your user or add one.</p>
+        </div>    
+    <div id="signInDiv">
+        <form onSubmit="return false;">
+            <input type = "text" placeholder="email"
+               id = "username" class="text-box"
+               onkeydown = "if (event.keyCode == 13)
+                                enterPressed();"    
+        />
+        <input type = "password" placeholder="password"
+               id = "password" class="text-box"
+               onkeydown = "if (event.keyCode == 13)
+                                enterPressed();"    
+        />
+        <input type = "button"
+               id = "btnSearch"
+               value = "Add user"
+               class = "btn"
+               onclick = "enterPressed();"
+        />
+        </form>
+        <p id="errorMessageEmail"></p>
+        <div id="userDetails"></div>
+    </div>
+    <div id="toggleQuestion">
+    </div>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAfo9_hLSlbwbZM0yVWwnxDNEMH2P3VHcA",
+    authDomain: "quiz-63bb7.firebaseapp.com",
+    databaseURL: "https://quiz-63bb7.firebaseio.com",
+    projectId: "quiz-63bb7",
+    storageBucket: "quiz-63bb7.appspot.com",
+    messagingSenderId: "454753888735",
+    appId: "1:454753888735:web:63fecce969da1a0a94bc6a",
+    measurementId: "G-YCJ5MYMTKQ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+
+</body>
+</html>

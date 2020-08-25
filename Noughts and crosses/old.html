@@ -1,0 +1,16 @@
+ 
+ <head>
+     <script defer src="script.js"></script>
+     <link rel="stylesheet" href="style.css"> 
+ </head>
+ <body>
+   <h1 id="winInfo"></h1>
+   <h1 id="ammountPlayersLabel">Two player mode</h1>
+   <img src="refresh.svg" height="50" width="50" onclick="resetBoard();">
+   <br>
+<canvas height="600" width="600"></canvas>
+<p>Choose ammount of players 1 or 2</p>
+<input id="ammountPlayers" type="text" onchange="getPlayers(this.value)">
+<input type="button" id="1" value="1 player" onclick="getPlayers(this.id);">
+<input type="button" id="2" value="2 players" onclick="getPlayers(this.id);" disabled>
+</body>

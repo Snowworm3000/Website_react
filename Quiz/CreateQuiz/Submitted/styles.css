@@ -1,0 +1,123 @@
+*,  *::before, *::after {
+    box-sizing: border-box;
+    font-family: "Lucida Console", "arial"
+}
+
+img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+    display:none;
+    }
+
+:root{
+    --hue-neutral: 200;
+    --hue-wrong: 0;
+    --hue-correct:145;
+}
+
+body {
+    --hue: var(--hue-neutral);
+    padding: 0;
+    background-color:hsl(var(--hue), 100%, 20%);
+    font-size: 4vw;
+    text-align: center;
+}
+
+@media only screen and (orientation: landscape) {
+    body {
+      font-size: 4vh;
+    }
+  }
+
+
+body.correct{
+    --hue: var(--hue-correct);
+}
+
+body.wrong{
+    --hue: var(--hue-wrong);
+}
+
+.top{
+    font-size: 1.4em;
+    color: rgb(86, 255, 122);
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+} 
+
+.container {
+    margin-top: 20px;
+    margin-left:auto;
+    margin-right: auto;
+    max-width: 900%;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 10px 10px 10px 2px;
+
+    position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.btn-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 46vw);
+    gap:10px;
+    margin:20px 0;
+}
+
+.question {
+    font-size: 1.4em;
+}
+
+.btn{
+    --hue:var(--hue-neutral);
+    border: 5px solid hsl(var(--hue), 100%,30%);
+    background-color: hsl(var(--hue), 100%, 50%);
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    outline: none;
+    font-size: 1.2em;
+}
+
+/*
+@media screen and (max-width : 2000px){
+    .btn {
+        font-size: 50px;
+    }
+}
+@media screen and (max-width : 1204px){
+    .btn {
+        font-size: 20px;
+    }
+}
+*/
+.btn:hover{
+    border-color: black;
+}
+
+.btn.correct{
+    --hue: var(--hue-correct);
+    color:black;
+}
+
+.btn.wrong{
+    --hue: var(--hue-wrong);
+}
+
+.start-btn, .next-btn {
+    font-size:1.5em;
+    font-weight:bold;
+    padding: 10px 20px;
+}
+.controls{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display:none;
+}

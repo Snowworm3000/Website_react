@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" rel="stylesheet">
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
+    <title>Quiz</title>
+    <meta name="viewport" content="width=device-width" />
+    <link rel='icon' href="../QuestionFavicon2.png">
+</head>
+<body>
+  <div class="header">
+    <a href="javascript:anchor('home')">Home</a>
+    <div class="header-right">
+      <a class="active" href="javascript:anchor('quiz')">Quiz</a> 
+      <a href="javascript:anchor('quizM')">Quiz maker</a>
+      <a id="login" href="javascript:anchor('login')">Login</a>
+      <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+      </div>
+    </div>
+  
+    <div class="top" id="topStart">Ethan's Quiz!</div>
+    <div id="signedIn"></div>
+    <div class="leaderboard-container hide" id = "leaderboard-con">
+      <p style="text-align: center;">Leaderboard<p>
+      <div id="leaderboard">
+        <div id="shift-left">
+
+        </div>
+    <div id="leaderboard"></div>
+    </div>
+    </div>
+
+    <div id="questionOwner" class="top"></div>
+    <div class="container">
+        <div id="question-container" class="hide">
+            <div id="question" class="question">Question</div>
+            <div id="answer-buttons" class="btn-grid">
+                <button class="btn">Answer 1</button>
+                <button class="btn">Answer 2</button>
+                <button class="btn">Answer 3</button>
+                <button class="btn">Answer 4</button>
+            </div>
+        </div>
+        <div id="correct-message"></div>
+        <div class="controls">
+            <button id="start-btn" class="start-btn btn">Start</button>
+            <button id="next-btn" class="next-btn btn hide">Next</button>
+        </div>
+    </div>
+    <audio id="audio-c" src="./correct.wav"></audio>
+    <audio id="audio-w" src="./wrong.wav"></audio>
+
+<div id="displayQuestions"></div>
+
+
+
+
+
+
+</div>
+
+    
+</body>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAfo9_hLSlbwbZM0yVWwnxDNEMH2P3VHcA",
+    authDomain: "quiz-63bb7.firebaseapp.com",
+    databaseURL: "https://quiz-63bb7.firebaseio.com",
+    projectId: "quiz-63bb7",
+    storageBucket: "quiz-63bb7.appspot.com",
+    messagingSenderId: "454753888735",
+    appId: "1:454753888735:web:63fecce969da1a0a94bc6a",
+    measurementId: "G-YCJ5MYMTKQ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+</html> 

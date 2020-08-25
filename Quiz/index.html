@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="styles.css" rel="stylesheet">
+        <link rel='icon' href="QuestionFavicon2.png">
+        <title>Home</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
+    </head>
+    <style>
+        img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+display:none;
+}
+    </style>
+<body>
+
+  <div class="header">
+    <a class="active" href="javascript:anchor('home')">Home</a>
+    <div class="header-right">
+      <a href="javascript:anchor('quiz')">Quiz</a> 
+      <a href="javascript:anchor('quizM')">Quiz maker</a>
+      <a id="login" href="javascript:anchor('login')">Login</a>
+      <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+      </div>
+    </div>
+
+      
+    <div class="container">
+        <div id="question-container" >
+            <h1>Welcome to the home of Ethan's quiz website. You can choose any of the options above.</h1>
+    </div>
+    </div>
+</body>
+
+<script>
+let colorChange = parseFloat(localStorage.getItem("rainbow"));
+function gameLoop(){
+    window.requestAnimationFrame(gameLoop);
+    if (colorChange < 360){
+        colorChange += 1;
+    }else{
+        colorChange = 0;
+    }
+    document.getElementById("rainbow").style.backgroundImage = "linear-gradient(-45deg , hsl("+colorChange+", 100%, 40%), hsl("+(colorChange + 70)+", 100%, 40%)";
+  }
+
+document.body.id = ("rainbow");
+gameLoop();
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  function anchor(event){
+  if(event == "home"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/index.html";
+  }else if(event == "quiz"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/Game/index.html";
+  }else if(event == "quizM"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/CreateQuiz/index.html";
+  }else if(event == "login"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/Login/index.html";
+  }else if(event == "signUp"){
+    localStorage.setItem("rainbow",colorChange);
+    window.location.href = "/Quiz/SignUp/index.html";
+}
+  
+}
+
+
+setSignedIn();
+function setSignedIn(){
+let username= getCookie("username");
+if(username != ""){
+  document.getElementById("signUp").style.display = "none";
+  if(getCookie("profile-pic")){
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='"+ getCookie('profile-pic') +"'>"+username;
+  }else{
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='./user.png'>"+username;
+  }
+}
+}
+</script>
+
+</html>

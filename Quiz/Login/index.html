@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel='icon' href="../QuestionFavicon2.png">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="964614107255-nvqs4nibdt8t4otm19r7a22qqdbn4ihl.apps.googleusercontent.com">
+</head>
+<body>
+  <div class="header">
+    <a href="javascript:anchor('home')">Home</a>
+    <div class="header-right">
+      <a href="javascript:anchor('quiz')">Quiz</a> 
+      <a href="javascript:anchor('quizM')">Quiz maker</a>
+      <a class="active" id="login" href="javascript:anchor('login')">Login</a>
+      <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+      </div>
+    </div>
+
+          <div class="container">
+            <div id="question-container">
+
+              <section id="whenSignedOut">
+            
+
+            <div id="userDetails"></div>
+
+            <div id="signInBtn" class="abcRioButton abcRioButtonLightBlue" style="height:36px;width:120px;margin: 0.5em;"><div class="abcRioButtonContentWrapper"><div class="abcRioButtonIcon" style="padding:8px"><div style="width:18px;height:18px;" class="abcRioButtonSvgImageWithFallback abcRioButtonIconImage abcRioButtonIconImage18"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg"><g><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></g></svg></div></div><span style="font-size:13px;line-height:34px;" class="abcRioButtonContents"><span id="not_signed_in4e9vzz5i6pq">Sign in</span><span id="connected4e9vzz5i6pq" style="display:none">Signed in</span></span></div></div>
+
+
+              <form onSubmit="return false;">
+                <input type = "text" placeholder="email"
+                   id = "username" class="text-box"
+                   onkeydown = "if (event.keyCode == 13)
+                                    enterPressed();"    
+            />
+            <input type = "password" placeholder="password"
+                   id = "password" class="text-box"
+                   onkeydown = "if (event.keyCode == 13)
+                                    enterPressed();"    
+            />
+            <input type = "button"
+                   id = "btnSearch"
+                   value = "Sign in"
+                   class = "btn"
+                   onclick = "enterPressed();"
+            />
+            </form>
+            <p id="errorMessageEmail"></p>
+      
+        </section>
+      
+        <section id="whenSignedIn" hidden="true">
+      
+          <button class="btn" id="signOutBtn">Sign Out</button>
+      
+        </section>
+            
+        </div>
+        </div>
+    
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAfo9_hLSlbwbZM0yVWwnxDNEMH2P3VHcA",
+    authDomain: "quiz-63bb7.firebaseapp.com",
+    databaseURL: "https://quiz-63bb7.firebaseio.com",
+    projectId: "quiz-63bb7",
+    storageBucket: "quiz-63bb7.appspot.com",
+    messagingSenderId: "454753888735",
+    appId: "1:454753888735:web:63fecce969da1a0a94bc6a",
+    measurementId: "G-YCJ5MYMTKQ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
+
+</body>
+</html>

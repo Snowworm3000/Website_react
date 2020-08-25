@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noughts and crosses</title>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="icon" href="Cross.svg">
+</head>
+<body>
+    <div class="bar">
+    <h1 id="winInfo"></h1>
+   <h1 id="ammountPlayersLabel">Two player mode</h1>
+    </div>
+
+<div id="mainGame" class="mainGame centerFlex">
+<div class="mainGame">
+    <div class="spaceBetween">
+    <div class="buttonFlex">
+   <img class="center" src="refresh.svg" onclick="resetBoard();">
+   <input class="btn" type="button" id="1" value="1 player" onclick="getPlayers(this.id);">
+    <input class="btn" type="button" id="2" value="2 players" onclick="getPlayers(this.id);" disabled>
+    </div>
+    <div>
+    <img class="center" src="Cross.svg" width="70">
+    <p class="centerText" id="scoreCross">0</p>
+    </div>
+    <div>
+        <img class="center" src="Circle.svg" width="70">
+        <p class="centerText" id="scoreCircle">0</p>
+    </div>
+    </div>
+    <div>
+<canvas id="game" height="600" width="600"></canvas>
+</div>
+</div>
+</div>
+<!--
+<input class="btn" id="ammountPlayers" type="text" onchange="getPlayers(this.value)">
+-->
+
+<input class="textInput" type="text" id="gridSize" placeholder="Grid size" onchange="changeGridSize(this.value);">
+
+</body>
+</html>

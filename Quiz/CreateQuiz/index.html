@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Quiz</title>
+    <link href="./styles.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
+    <link href="../QuestionFavicon2.png" rel="icon">
+</head>
+<style>
+img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+display:none;
+}
+</style>
+<body class="white">
+
+    <div class="header">
+        <a href="javascript:anchor('home')">Home</a>
+        <div class="header-right">
+          <a href="javascript:anchor('quiz')">Quiz</a> 
+          <a class="active" href="javascript:anchor('quizM')">Quiz maker</a>
+          <a id="login" href="javascript:anchor('login')">Login</a>
+          <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+          </div>
+        </div>
+
+
+    <div class="container">
+    <div id="question-container">
+    <div id = "signedIn">
+        <p>Pick your user or add one to make questions for the quiz.</p>
+    </div>
+
+</div>
+
+<div id="toggleQuestion">
+</div>
+
+
+<div id="addQuestionsDiv" style="display: none;">
+</form>
+    <form onSubmit="return false;">
+        <label>Question</label>
+       <input type= "text" class="text-box"
+       id= "questionBox" placeholder="Type your question here"
+       onkeydown = "if(event.keyCode == 13)
+                        questionInput(this.value);"> 
+                        <br>
+
+        <label>Ammount of answers to questions?</label>
+        <select class="black" name="numberOfQuestions" id="numberOfQuestions" oninput="changeAmmountQuestions(this.value);">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+        </select>
+    </form>
+    <div id="not">
+
+    </div>
+    <form id="answerBoxes">
+    </form>
+    <div id="notAllCompleted">
+
+    </div>
+    <input class="submit" type="submit" onclick="submitQuestion();" value="Submit">
+
+</div>
+
+<div id="result"></div>
+
+<div id="displayQuestions">
+
+</div>
+
+</div>
+</div>
+
+<div id="questionsMade" style="display: none;" class="container">
+    <div id="question-container">
+        <p>Questions you have made.</p>
+        <div id="showQuestions"></div>
+    </div>
+</div>
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-analytics.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAfo9_hLSlbwbZM0yVWwnxDNEMH2P3VHcA",
+      authDomain: "quiz-63bb7.firebaseapp.com",
+      databaseURL: "https://quiz-63bb7.firebaseio.com",
+      projectId: "quiz-63bb7",
+      storageBucket: "quiz-63bb7.appspot.com",
+      messagingSenderId: "454753888735",
+      appId: "1:454753888735:web:63fecce969da1a0a94bc6a",
+      measurementId: "G-YCJ5MYMTKQ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+<script>
+let ammountAnswers;
+
+function enterPressed(){
+    value = document.querySelector("#txtSearch").value
+    addUser(value);
+}
+
+
+/*function logUserList(){
+    for(i in usersList){
+        console.log(usersList[i])
+    }
+}*/
+
+setSignedIn();
+function setSignedIn(){
+username= getCookie("username");
+if(username != ""){
+  document.getElementById("signUp").style.display = "none";
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='../user.png'>"+username;
+}
+}
+
+function deleteUser(id, user){
+    //let user = document.getElementById(id).className
+    //console.log(id)
+    console.log(id)
+    userName = usersList[parseInt(user , 10)]
+    //console.log(usersList)
+    //console.log(userName)
+
+    if(id == "s"){
+        console.log("It's a s")
+        signIn(userName)
+    }
+
+    if(id == "d"){
+        ok = confirm('Are you sure you would like to delete the user "' + userName  + '"')
+        if (ok) {
+            toDelete = firebase.database().ref('users/' + userName)
+            toDelete.set(null);
+        }
+    }
+}
+
+signedIn = ""
+function signIn(userValue){
+    document.getElementById("addQuestionsDiv").style.display = ""
+    signedIn = userName
+    var text = document.getElementById("signedIn");
+    text.innerHTML = 'You are signed in as "' + userName + '"'
+    changeAmmountQuestions(4)
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
+
+  let usernameCookie= getCookie("username");
+if(usernameCookie != ""){
+  document.getElementById("signUp").style.display = "none";
+  if(getCookie("profile-pic")){
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='"+ getCookie('profile-pic') +"'>"+usernameCookie;
+  }else{
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='./user.png'>"+usernameCookie;
+  }
+}
+
+checkSignIn();
+function checkSignIn(){
+    if(getCookie("username") != ""){
+        userName = getCookie("username");
+        signIn();
+    }else if(firebase.auth().currentUser != null){
+        displayName = firebase.auth().currentUser;
+        if(displayName.displayName === null){
+          displayName = displayName.email.split("@")[0];
+        }
+        userName= displayName.displayName
+        signIn();
+    }
+    else{
+        document.getElementById("signedIn").innerHTML = "<p>You are not signed in so you cannot make any questions for the quiz. Create an account or sign in by clicking <a href='../SignUp/index.html' class='link'>here</a>."
+    }
+}
+
+function addUser(input){
+    firebase.database().ref('users/' + input).set(0);
+}
+
+function changeAmmountQuestions(input){
+    ammountAnswers = input;
+    answerBoxes = document.getElementById("answerBoxes");
+    answerBoxes.innerHTML = ""
+    answerBoxes.style.color = "red";
+    if(2 <= input && input <= 8){
+        for (var i=0; i<input ; i++) {
+            answerBoxes.innerHTML += "<input class='text-box'  id='answerBox"+ i + "' type='text' placeholder='Answer " + (i + 1) + "'> <input class='btn' id='incorrect" + i + "' type='button' value='Incorrect' onclick='updateButton(" + '"I"' + "," + i + ")'> <input class='btn' id='correct" + i + "' type='button' value='Correct' onclick='updateButton(" + '"C"' + "," + i + ")'> <br>";
+        }
+    } else if(2>= input){
+        answerBoxes.innerHTML = "<p>More than 1 answer is required</p>"
+    } else{
+        answerBoxes.innerHTML = "<p>The maximum amount of answers is 8</p>"
+    }
+}
+
+function showUsers(toggle){
+    div = document.getElementById("signInDiv")
+    
+    button = document.getElementById("toggleUVisibility")
+    
+    if(toggle){
+        div.style.display = ""
+        button.setAttribute("onClick", "javascript: showUsers(false);");
+        button.value = "Hide users"
+    }else{
+        div.style.display = "none"
+        button.setAttribute("onClick", "javascript: showUsers(true);");
+        button.value = "Show users"
+    }
+
+}
+
+
+function submitQuestion(){
+    let questionInputValue = document.getElementById("questionBox").value
+    let answers = [];
+    for(let i = 0; i<ammountAnswers; i++){
+        answers.push(document.getElementById("answerBox" + i).value)
+    }
+    console.log(canCreateObject(questionInputValue,ammountAnswers,answers))
+    if(canCreateObject(questionInputValue,ammountAnswers,answers)){
+        createObject(questionInputValue,ammountAnswers,answers);
+    }
+}
+
+let answersButtons = {}
+function updateButton(type, id){
+    console.log(type)
+    console.log(id)
+    answersButtons[id] = type
+    if(type =="C"){
+        console.log("OOOOKKK")
+        document.getElementById("correct" + id).classList.add("green")
+        document.getElementById("incorrect" + id).classList.remove("red")
+    }else{
+        console.log("YEEEES")
+        document.getElementById("incorrect" + id).classList.add("red")
+        document.getElementById("correct" + id).classList.remove("green")
+    }
+    console.log(answersButtons)
+}
+
+function canCreateObject(question,aAnswers,answers){
+    canCreateObjectValue = true
+    answersButtonsLength = Object.keys(answersButtons).length
+    if(answersButtonsLength != aAnswers){
+        canCreateObjectValue = false;
+    }
+    function allAnswersComplete(){
+        let count = 0
+        for(let i = 0; i < ammountAnswers ;i++){
+            if(document.getElementById("answerBox" + i).value.length < 1){
+                count++;
+            }
+        }
+        return count
+    }
+    allAnswersCompleteValue = allAnswersComplete();
+    console.log(allAnswersCompleteValue)
+
+    document.getElementById("notAllCompleted").innerHTML = "";
+
+    if(answersButtonsLength < ammountAnswers){
+            document.getElementById("notAllCompleted").innerHTML += "<p style='color:red;'>Not all of the answers have been chosen to be correct or not yet.</p>"
+        }
+    if(allAnswersCompleteValue != false){
+        console.log("Not all completed")
+        document.getElementById("notAllCompleted").innerHTML += "<p style='color:red;'>Not all answers have been entered, either decrease the ammount of answers or fill in the remaining "+ allAnswersCompleteValue +".</p>"
+        console.log(answersButtonsLength)
+        canCreateObjectValue = false;
+    }
+    return canCreateObjectValue;
+}
+
+
+let createdObject = {}
+//createObject()
+function createObject(question,aAnswers,answers){
+    createdObject["question"] = question;
+    console.log("bwklbthwtahkht    " + answers)
+    createdObject["answers"] = []
+    for(let i = 0; i<aAnswers; i++){
+        let convertTo = true
+        if(answersButtons[i] == "I"){
+            convertTo = false
+            console.log(convertTo)
+        }else{
+            console.log(convertTo)
+        }
+        console.log("eriuygheriglnsl b "+ answersButtons[i])
+        createdObject.answers.push({"text": answers[i], "correct": convertTo},)
+    }
+    createdObject.owner = userName;
+    console.log(createdObject)
+    uploadQuiz()
+}
+
+function uploadQuiz(){
+    console.log("uploading")
+    document.getElementById("result").innerHTML = "<p>Your question has been uploaded to the quiz.</p><p>You can make more questions if you want.</p>"
+    questionsUpload = firebase.database().ref("questions/" + firebase.auth().currentUser.uid);
+    questionsUpload.push(createdObject)
+    window.location.href = "./Submitted/index.html";
+}
+
+
+
+/*
+function displayQuestions(questionsDatabase){
+    div = document.getElementById("displayQuestions")
+    console.log(questionsDatabase)
+    div.innerHTML = "<p>"+ JSON.stringify(questionsDatabase) +"</p>"
+}
+
+var checkQuestions = firebase.database().ref("questions")
+checkQuestions.on('value', function(snapshot){
+    question = snapshot.val();
+    displayQuestions(question);
+})
+*/
+let rawQuestions = {}
+let questions = [];
+let totalQuestions;
+
+let questionVariable;
+var checkQuestions = firebase.database().ref("questions")
+checkQuestions.on('value', function(snapshot){
+    question = snapshot.val();
+    getUsersQuestions(question);
+    questionVariable = question
+    /*
+    let edited =[];
+    console.log(question)
+    console.log(question.children)
+    console.log(Object.values(question))
+    question = Object.values(question)
+    question.forEach(val =>{
+        Object.values(val).forEach(val2 =>{
+            edited.push(val2);
+        })
+    })
+    console.log(edited)
+    for(i in edited){
+        questions.push(edited[i]);
+    } 
+    totalQuestions = edited.length
+    console.log(totalQuestions + " UAA")
+    //displayQuestions(questions);
+    showQuestions();
+    */
+})
+
+function getUsersQuestions(val){
+    let question = val[firebase.auth().currentUser.uid];
+    console.log(question);
+    console.log("after");
+    question = Object.values(question);
+    questions = question;
+    totalQuestions = questions.length;
+    console.log(question)
+    showQuestions();
+}
+
+function showQuestions(){
+    let showQuestions = document.getElementById("showQuestions")
+    document.getElementById("questionsMade").style.display = "";
+    showQuestions.innerHTML="";
+    console.log("SHOWING")
+    console.log(questions)
+    console.log(totalQuestions)
+    for(let i=0; i< totalQuestions; i++){
+        showQuestions.innerHTML += "<p>"+questions[i].question+"</p> <div id='showAnswers"+i+"'></div> <input type='button' class='btn red' value='Delete' onclick='deleteQuestion("+i+")'>"
+    }
+}
+
+
+function deleteQuestion(e){
+    console.log(Object.keys(rawQuestions)[e])
+    console.log("questions/" + Object.keys(rawQuestions)[e])
+    console.log("questions/" + firebase.auth().currentUser.uid + "/")
+    keyToDelete = Object.keys(questionVariable[firebase.auth().currentUser.uid])[e];
+    toDeleteQuestion = firebase.database().ref("questions/" + firebase.auth().currentUser.uid + "/" + keyToDelete)
+    console.log(Object.keys(rawQuestions)[e])
+    console.log(questionVariable)
+    let ok = confirm("ARE YOU SURE")
+    if(ok){
+        console.log(Object.keys(questionVariable[firebase.auth().currentUser.uid])[e])
+        toDeleteQuestion.set(null)
+    }
+    //location.reload()
+}
+
+function anchor(event){
+  if(event == "home"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/index.html";
+  }else if(event == "quiz"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/Game/index.html";
+  }else if(event == "quizM"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/CreateQuiz/index.html";
+  }else if(event == "login"){
+      localStorage.setItem("rainbow",colorChange);
+      window.location.href = "/Quiz/Login/index.html";
+  }else if(event == "signUp"){
+    localStorage.setItem("rainbow",colorChange);
+    window.location.href = "/Quiz/SignUp/index.html";
+}
+  
+}
+
+let colorChange = parseFloat(localStorage.getItem("rainbow"));
+function gameLoop(){
+    window.requestAnimationFrame(gameLoop);
+    if (colorChange < 360){
+        colorChange += 1;
+    }else{
+        colorChange = 0;
+    }
+    document.getElementById("rainbow").style.backgroundImage = "linear-gradient(-45deg , hsl("+colorChange+", 100%, 40%), hsl("+(colorChange + 70)+", 100%, 40%)";
+  }
+
+document.body.id = ("rainbow");
+gameLoop();
+
+
+let firebaseUser = firebase.auth().currentUser;
+
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        // signed in
+        displayName = user.displayName;
+        if(user.displayName === null){
+          displayName = user.email.split("@")[0];
+        }
+        userName = displayName;
+        checkSignIn();
+        document.getElementById("signUp").style.display = "none";
+
+        if(user.photoURL){
+    document.getElementById("login").innerHTML = "<img id='profile-pic' src='"+user.photoURL+"'>"+userName;
+        }else{
+            document.getElementById("login").innerHTML = "<img id='profile-pic' src='../user.png'>"+userName;
+        }
+    }
+});
+
+</script>
+
+</html>
