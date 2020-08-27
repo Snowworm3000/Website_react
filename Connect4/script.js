@@ -1,3 +1,4 @@
+const winDiv = document.getElementById("win");
 const canvas = document.getElementById("game");
 canvas.width = canvas.height = 600;
 var ctx = canvas.getContext('2d');
@@ -38,6 +39,7 @@ enter.addEventListener("keyup", function(event) {
 let playing = true;
 let winType = 0;
 let player = 0;
+winDiv.hidden = true;
 function makeMove(col){
     if(playing){
         if(is_valid_location(board,col)){
@@ -48,6 +50,13 @@ function makeMove(col){
                 console.log("WINNNER")
                 console.log(winType)
                 playing = false;
+                drawGrid()
+                winDiv.hidden = false;
+                if(player == 1){
+                    winDiv.style.background = "#fa5050";
+                }else{
+                    winDiv.style.background = "#f1fa50";
+                }
             }
             player++
             player = player % 2;
@@ -148,12 +157,22 @@ function printBoard(){
     }
 }
 
+function restartGame(){
+    winDiv.hidden = true;
+    board = makeBoard();
+    playing = true;
+    drawGrid();
+}
 
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
 })
 
 function getCursorPosition(canvas,e){
+    if(playing == false){
+        restartGame()
+        return
+    }
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
@@ -196,39 +215,28 @@ function resizeCanvas() {
 }
 
 function drawGrid(){
-    if(playing == false){
-        ctx.fillStyle = "#ffffff"
-        if(winner == 1){
-            ctx.font = "30px Arial"
-            ctx.fillText("Yellow has won the game",1,50)
-        }else{
-            ctx.font = "30px Arial"
-            ctx.fillText("Red has won the game",1,50)
-        }
+    let boardY = canvas.width/6 *5;
+    if(player==1){
+        ctx.fillStyle = "#ffec5b"
+        ctx.fillRect(0,0,canvas.width,boardY)
     }else{
-        let boardY = canvas.width/6 *5;
-        if(player==1){
-            ctx.fillStyle = "#ffec5b"
-            ctx.fillRect(0,0,canvas.width,boardY)
-        }else{
-            ctx.fillStyle = "#ff5050"
-            ctx.fillRect(0,0,canvas.width,boardY)
-        }
-        ctx.fillStyle = "#4551f7"
-        ctx.fillRect(0,canvas.width -boardY,canvas.width,boardY)
-        for(let row=0;row<rowCount;row++){
-            for(let col=0;col<columnCount;col++){
-                let size = canvas.width/13;
-                let r= rowCount-row-1
-                let x=(canvas.width/columnCount *col) -size/2 +size
-                let y=((boardY/rowCount *r) -size/2 +size) + canvas.height - boardY
-                if(board[row][col] == 0){
-                    ctx.drawImage(whiteCounter,x,y,size,size)
-                }else if(board[row][col] == parseInt(1)){
-                    ctx.drawImage(yellowCounter,x,y,size,size)
-                }else{
-                    ctx.drawImage(redCounter,x,y,size,size)
-                }
+        ctx.fillStyle = "#ff5050"
+        ctx.fillRect(0,0,canvas.width,boardY)
+    }
+    ctx.fillStyle = "#4551f7"
+    ctx.fillRect(0,canvas.width -boardY,canvas.width,boardY)
+    for(let row=0;row<rowCount;row++){
+        for(let col=0;col<columnCount;col++){
+            let size = canvas.width/13;
+            let r= rowCount-row-1
+            let x=(canvas.width/columnCount *col) -size/2 +size
+            let y=((boardY/rowCount *r) -size/2 +size) + canvas.height - boardY
+            if(board[row][col] == 0){
+                ctx.drawImage(whiteCounter,x,y,size,size)
+            }else if(board[row][col] == parseInt(1)){
+                ctx.drawImage(yellowCounter,x,y,size,size)
+            }else{
+                ctx.drawImage(redCounter,x,y,size,size)
             }
         }
     }

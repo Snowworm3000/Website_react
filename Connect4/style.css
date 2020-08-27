@@ -1,0 +1,27 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container{
+    position:relative;
+    text-align:center;
+    color:white;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5vw;
+}
+
+.box{
+    width: 40vw;
+    height: 20vw;
+    background: blue;
+    border-radius: 20px;
+    color: white;
+    text-shadow: black 1px 1px 5px;
+    box-shadow: black 0px 0px 20px;
+}
