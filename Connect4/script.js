@@ -1,4 +1,5 @@
 const winDiv = document.getElementById("win");
+const buttonPlayers = document.getElementById("players")
 const canvas = document.getElementById("game");
 canvas.width = canvas.height = 600;
 var ctx = canvas.getContext('2d');
@@ -16,6 +17,17 @@ whiteCounter.onload = function(){ drawGrid() };
 whiteCounter.src = "counterWhite.svg"
 
 
+let playerMode = 1;
+buttonPlayers.addEventListener("click",function(){
+    playerMode++
+    playerMode = playerMode % 2;
+    if(playerMode == 1){
+        buttonPlayers.value = "Two player";
+    }else{
+        buttonPlayers.value = "One player";
+    }
+    console.log(playerMode)
+})
 
 
 function input(e){
@@ -44,12 +56,26 @@ function makeMove(col){
                 winDiv.hidden = false;
                 if(player == 1){
                     winDiv.style.background = "#fa5050";
+                    winDiv.innerText = "Red is the winner"
                 }else{
                     winDiv.style.background = "#f1fa50";
+                    winDiv.innerText = "Yellow is the winner"
                 }
             }
-            player++
-            player = player % 2;
+            if(playerMode== 1){
+                player++
+                player = player % 2;
+            }else{
+                player = 0;
+                console.log("startttt")
+                move = compMove(board)
+                console.log(move);
+                console.log("SMARTTTT")
+
+                let row = getNextOpenRow(board,move);
+                dropPiece(board,row,move,2);
+                drawGrid();
+            }
         }else{
             console.log("invalid location")
         }
@@ -59,6 +85,58 @@ function makeMove(col){
 
 let rowCount = 6
 let columnCount = 7
+
+function convertBoard(board){
+    let boardPrint = []
+    for(let i =0;i<columnCount*rowCount;i+=columnCount){
+        boardPrint.push(board.slice(i,i+columnCount))
+    }
+    return boardPrint
+}
+
+function getPossibleMoves(){
+    possibleMoves = []
+    for(let i=0;i<columnCount;i++){
+        console.log(i);
+        if(is_valid_location(board,i)){
+            possibleMoves.push(i)
+        }
+    }
+    return possibleMoves
+}
+
+function compMove(board){
+    console.log("start")
+    editedBoard = board.flat();
+    console.log(editedBoard)
+
+    possibleMoves = getPossibleMoves()
+
+    console.log("I WILL WIN")
+
+    for(i in possibleMoves){
+        boardCopy = editedBoard.slice();
+        boardCopy[possibleMoves[i]] = 2
+         
+        if(winning_move(convertBoard(boardCopy),2)){
+            return possibleMoves[i]
+        }
+    }
+
+
+    console.log("YOU WIll WIN")
+    for(i in possibleMoves){
+        boardCopy = board.slice();
+        boardCopy[possibleMoves[i]] = 1
+        
+        if(winning_move(convertBoard(boardCopy),1)){
+            return possibleMoves[i]
+        }
+    }
+
+    console.log("RANDOMMMMMM")
+    return possibleMoves[Math.round(Math.random()*(possibleMoves.length - 1))]
+}
 
 function dropPiece(board,row,col,piece){
     console.log(row,col,piece)
