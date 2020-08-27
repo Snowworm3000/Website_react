@@ -19,22 +19,12 @@ whiteCounter.src = "counterWhite.svg"
 
 
 function input(e){
-    if(isNaN(e) == false){
-        e = parseInt(e);
-        if(7>e && e >=0){
-            console.log(e)
-            makeMove(e);
-        }
+    e = parseInt(e);
+    if(7>e && e >=0){
+        console.log(e)
+        makeMove(e);
     }
 }
-
-var enter = document.getElementById("textSearch");
-enter.addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) {
-        input(document.getElementById("textSearch").value)
-    }
-});
 
 let playing = true;
 let winType = 0;
@@ -205,9 +195,9 @@ function initialize() {
 // then draws the new borders accordingly.
 function resizeCanvas() {
     if(window.innerWidth > window.innerHeight){
-        windowSize = window.innerHeight -200
+        windowSize = window.innerHeight - 20
     }else{
-        windowSize = window.innerWidth -100
+        windowSize = window.innerWidth
     }
     canvas.width = windowSize;
     canvas.height = windowSize;
