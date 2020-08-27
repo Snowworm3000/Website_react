@@ -39,21 +39,23 @@ let playing = true;
 let winType = 0;
 let player = 0;
 function makeMove(col){
-    if(is_valid_location(board,col)){
-        let row = getNextOpenRow(board,col);
-        dropPiece(board,row,col,player +1);
-        drawGrid()
-        if(winning_move(board,player +1)){
-            console.log("WINNNER")
-            console.log(winType)
-            playing = false;
+    if(playing){
+        if(is_valid_location(board,col)){
+            let row = getNextOpenRow(board,col);
+            dropPiece(board,row,col,player +1);
+            drawGrid()
+            if(winning_move(board,player +1)){
+                console.log("WINNNER")
+                console.log(winType)
+                playing = false;
+            }
+            player++
+            player = player % 2;
+        }else{
+            console.log("invalid location")
         }
-        player++
-        player = player % 2;
-    }else{
-        console.log("invalid location")
+        printBoard()
     }
-    printBoard()
 }
 
 let rowCount = 6
