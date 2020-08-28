@@ -33,7 +33,6 @@ buttonPlayers.addEventListener("click",function(){
 function input(e){
     e = parseInt(e);
     if(7>e && e >=0){
-        console.log(e)
         makeMove(e);
     }
 }
@@ -46,40 +45,42 @@ function makeMove(col){
     if(playing){
         if(is_valid_location(board,col)){
             let row = getNextOpenRow(board,col);
-            dropPiece(board,row,col,player +1);
+            board = dropPiece(board,row,col,player +1);
             drawGrid()
             if(winning_move(board,player +1)){
-                console.log("WINNNER")
-                console.log(winType)
-                playing = false;
-                drawGrid()
-                winDiv.hidden = false;
-                if(player == 1){
-                    winDiv.style.background = "#fa5050";
-                    winDiv.innerText = "Red is the winner"
-                }else{
-                    winDiv.style.background = "#f1fa50";
-                    winDiv.innerText = "Yellow is the winner"
-                }
+                showWinner(player);
             }
             if(playerMode== 1){
                 player++
                 player = player % 2;
             }else{
                 player = 0;
-                console.log("startttt")
                 move = compMove(board)
-                console.log(move);
-                console.log("SMARTTTT")
 
                 let row = getNextOpenRow(board,move);
-                dropPiece(board,row,move,2);
+                board = dropPiece(board,row,move,2);
                 drawGrid();
+                if(winning_move(board,2)){
+                    showWinner(1);
+                }
             }
         }else{
             console.log("invalid location")
         }
-        printBoard()
+        //printBoard()
+    }
+}
+
+function showWinner(player = 0){
+    playing = false;
+    drawGrid()
+    winDiv.hidden = false;
+    if(player == 1){
+        winDiv.style.background = "#fa5050";
+        winDiv.innerText = "Red is the winner"
+    }else{
+        winDiv.style.background = "#f1fa50";
+        winDiv.innerText = "Yellow is the winner"
     }
 }
 
@@ -97,7 +98,6 @@ function convertBoard(board){
 function getPossibleMoves(){
     possibleMoves = []
     for(let i=0;i<columnCount;i++){
-        console.log(i);
         if(is_valid_location(board,i)){
             possibleMoves.push(i)
         }
@@ -106,31 +106,39 @@ function getPossibleMoves(){
 }
 
 function compMove(board){
-    console.log("start")
     editedBoard = board.flat();
-    console.log(editedBoard)
 
     possibleMoves = getPossibleMoves()
 
     console.log("I WILL WIN")
 
     for(i in possibleMoves){
+        i = parseInt(i);
         boardCopy = editedBoard.slice();
-        boardCopy[possibleMoves[i]] = 2
-         
-        if(winning_move(convertBoard(boardCopy),2)){
-            return possibleMoves[i]
+        if(is_valid_location(board,i)){
+            row = getNextOpenRow(convertBoard(boardCopy),i)
+            boardCopy = dropPiece(convertBoard(boardCopy),row,i,2)
+            console.log(boardCopy)
+            console.log(winning_move(boardCopy,2))
+            if(winning_move(boardCopy,2)){
+                return possibleMoves[i]
+            }
         }
     }
 
 
     console.log("YOU WIll WIN")
     for(i in possibleMoves){
-        boardCopy = board.slice();
-        boardCopy[possibleMoves[i]] = 1
-        
-        if(winning_move(convertBoard(boardCopy),1)){
-            return possibleMoves[i]
+        i = parseInt(i);
+        boardCopy = editedBoard.slice();
+        if(is_valid_location(board,i)){
+            row = getNextOpenRow(convertBoard(boardCopy),i)
+            boardCopy = dropPiece(convertBoard(boardCopy),row,i,1)
+            console.log(boardCopy)
+            console.log(winning_move(boardCopy,1))
+            if(winning_move(boardCopy,1)){
+                return possibleMoves[i]
+            }
         }
     }
 
@@ -139,8 +147,9 @@ function compMove(board){
 }
 
 function dropPiece(board,row,col,piece){
-    console.log(row,col,piece)
-    board[row][col] = piece;
+    copy = board.slice()
+    copy[row][col] = piece;
+    return copy
 }
 
 
