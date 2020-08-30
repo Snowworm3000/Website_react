@@ -1,3 +1,114 @@
+
+const socket = io.connect('https://vast-crag-16763.herokuapp.com/')
+const messageContainer = document.getElementById("message-container")
+
+//const name = prompt("What is your name?")
+appendMessage("You joined")
+socket.emit('new-user', name)
+//appendMessage(name)
+
+socket.emit('say to someone', "hibbbb");
+
+
+socket.on("roomSet", room =>{
+    console.log("room", room)
+})
+
+socket.on("name", name=>{
+    console.log("name",name)
+})
+
+let playerNo = 0
+socket.on("playerNo", player=>{
+    playerNo = player
+})
+
+socket.on("userLeft", val=>{
+    appendMessage("user disconnected")
+})
+
+socket.on("move", move=>{
+    if(playerNo == move.player){
+        yourTurn = false
+    }else{
+        yourTurn = true
+    }
+    console.log(playerNo, move.player, "tjo")
+    let row = getNextOpenRow(board,move.col);
+    board = dropPiece(board,row,move.col,move.player +1);
+    drawGrid()
+    if(winning_move(board,move.player +1)){
+        showWinner(move.player);
+    }
+    console.log(move.player,move.col)
+})
+
+
+
+
+
+
+
+
+
+socket.on("my message", msg =>{
+    console.log(msg)
+})
+
+socket.on('users-list', users=>{
+    console.log(users)
+    clearDiv()
+    for(i of Object.values(users)){
+        appendMessage(i)
+    }
+})
+
+socket.on("location", location=>{
+    console.log(location)
+})
+
+socket.on('hello', data =>{
+    appendMessage(data);
+})
+
+socket.on('connectToRoom', data =>{
+    console.log(data)
+})
+
+socket.on("eee", data =>{
+    console.log(data)
+})
+
+
+function clearDiv(){
+    messageElement = document.getElementById("div")
+    messageElement.innerText = ""
+}
+function appendMessage(message) {
+    const messageElement = document.getElementById("div")
+    messageElement.innerHTML += message + "<br>"
+    messageContainer.append(messageElement)
+}
+
+function selectRoom(room){
+    socket.emit('join room', room);
+}
+
+
+
+
+
+
+
+multiplayerMode = false;
+function multiplayer(){
+    multiplayerMode = true;
+    playerMode = 2
+}
+
+
+
+
 const winDiv = document.getElementById("win");
 const buttonPlayers = document.getElementById("players")
 const canvas = document.getElementById("game");
@@ -29,12 +140,18 @@ buttonPlayers.addEventListener("click",function(){
     console.log(playerMode)
 })
 
+let yourTurn= true;
+
 
 function input(e){
+    if(yourTurn){
     e = parseInt(e);
     if(7>e && e >=0){
-        makeMove(e);
+        socket.emit("move",e);
+        //makeMove(e);
     }
+    yourTurn = false;
+}
 }
 
 let playing = true;
@@ -44,24 +161,39 @@ winDiv.hidden = true;
 function makeMove(col){
     if(playing){
         if(is_valid_location(board,col)){
-            let row = getNextOpenRow(board,col);
-            board = dropPiece(board,row,col,player +1);
-            drawGrid()
-            if(winning_move(board,player +1)){
-                showWinner(player);
-            }
-            if(playerMode== 1){
-                player++
-                player = player % 2;
-            }else{
-                player = 0;
-                move = compMove(board)
+            if(playerMode != 2){
+                let row = getNextOpenRow(board,col);
+                board = dropPiece(board,row,col,player +1);
+                drawGrid()
+                if(winning_move(board,player +1)){
+                    showWinner(player);
+                }
+                if(playerMode== 1){
+                    player++
+                    player = player % 2;
+                }else if(playerMode == 0){
+                    player = 0;
+                    move = compMove(board)
 
-                let row = getNextOpenRow(board,move);
-                board = dropPiece(board,row,move,2);
-                drawGrid();
-                if(winning_move(board,2)){
-                    showWinner(1);
+                    let row = getNextOpenRow(board,move);
+                    board = dropPiece(board,row,move,2);
+                    drawGrid();
+                    if(winning_move(board,2)){
+                        showWinner(1);
+                    }
+                }
+            } else{
+                if(yourTurn == true){
+                    let row = getNextOpenRow(board,col);
+                    board = dropPiece(board,row,col,player +1);
+                    drawGrid()
+                    if(winning_move(board,player +1)){
+                        showWinner(player);
+                    }
+                    yourTurn = false;
+                    console.log("moved")
+                } else{
+                    console.log("not your turn")
                 }
             }
         }else{
@@ -263,7 +395,6 @@ function getCursorPosition(canvas,e){
     }
 
     xSet = getLocation(x);
-    console.log(xSet)
     input(xSet)
 }
 
