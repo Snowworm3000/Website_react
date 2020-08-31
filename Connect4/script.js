@@ -1,110 +1,105 @@
+let multiplayerMode = false;
 
-const socket = io.connect('https://vast-crag-16763.herokuapp.com/')
+
+let socket;
 const messageContainer = document.getElementById("message-container")
+let yourTurn = true;
 
-//const name = prompt("What is your name?")
-appendMessage("You joined")
-socket.emit('new-user', name)
-//appendMessage(name)
+function multiplayer(){
+    
+    restartGame()
+    yourTurn = false;
 
-socket.emit('say to someone', "hibbbb");
+    socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
+    //socket = io("http://localhost:3000")
+
+    message("Waiting for player")
+
+    playerMode = 2
+    multiplayerMode = true;
+
+    //const name = prompt("What is your name?")
+    socket.emit('new-user', name)
+    //appendMessage(name)
+
+    socket.on("roomSet", room =>{
+        console.log("room", room)
+    })
+
+    socket.on("name", name=>{
+        console.log("name",name)
+    })
+
+    let playerNo = 0
+    socket.on("playerNo", player=>{
+        playerNo = player
+        console.log(playerNo)
+    })
+
+    socket.on("userLeft", val=>{
+        message("user disconnected")
+    })
+
+    socket.on("startGame", val =>{
+        console.log("start game", val)
+        yourTurn = true;
+        message("Game has started, your turn")
+    })
+
+    socket.on("move", move=>{
+        if(playing==false){
+            restartGame()
+        }
+
+        console.log("player move")
+        yourTurn = true;
+        /*
+        if(playerNo == move.player){
+            yourTurn = false
+        }else{
+            yourTurn = true
+        }
+        */
+        console.log(playerNo, player, "tjo")
+        let row = getNextOpenRow(board,move.col);
+        board = dropPiece(board,row,move.col,player +1);
+        drawGrid()
+        if(winning_move(board,player +1)){
+            showWinner(player);
+        }
+        console.log(player,move.col)
+        player++
+        player = player % 2;
+        message("Your turn")
+    })
 
 
-socket.on("roomSet", room =>{
-    console.log("room", room)
-})
-
-socket.on("name", name=>{
-    console.log("name",name)
-})
-
-let playerNo = 0
-socket.on("playerNo", player=>{
-    playerNo = player
-})
-
-socket.on("userLeft", val=>{
-    appendMessage("user disconnected")
-})
-
-socket.on("move", move=>{
-    if(playerNo == move.player){
-        yourTurn = false
-    }else{
-        yourTurn = true
+    function clearDiv(){
+        messageElement = document.getElementById("div")
+        messageElement.innerText = ""
     }
-    console.log(playerNo, move.player, "tjo")
-    let row = getNextOpenRow(board,move.col);
-    board = dropPiece(board,row,move.col,move.player +1);
-    drawGrid()
-    if(winning_move(board,move.player +1)){
-        showWinner(move.player);
+    function appendMessage(message) {
+        const messageElement = document.getElementById("div")
+        messageElement.innerHTML += message + "<br>"
+        messageContainer.append(messageElement)
     }
-    console.log(move.player,move.col)
-})
 
-
-
-
-
-
-
-
-
-socket.on("my message", msg =>{
-    console.log(msg)
-})
-
-socket.on('users-list', users=>{
-    console.log(users)
-    clearDiv()
-    for(i of Object.values(users)){
-        appendMessage(i)
-    }
-})
-
-socket.on("location", location=>{
-    console.log(location)
-})
-
-socket.on('hello', data =>{
-    appendMessage(data);
-})
-
-socket.on('connectToRoom', data =>{
-    console.log(data)
-})
-
-socket.on("eee", data =>{
-    console.log(data)
-})
-
-
-function clearDiv(){
-    messageElement = document.getElementById("div")
-    messageElement.innerText = ""
-}
-function appendMessage(message) {
-    const messageElement = document.getElementById("div")
-    messageElement.innerHTML += message + "<br>"
-    messageContainer.append(messageElement)
 }
 
 function selectRoom(room){
-    socket.emit('join room', room);
+    socket.emit('joinRoom', room);
+    console.log("join")
+}
+
+const messageBox = document.getElementById("msg")
+function message(msg){
+    messageBox.hidden = false
+    messageBox.innerText = msg
+    messageBox.classList.remove("fade");
 }
 
 
 
-
-
-
-
-multiplayerMode = false;
-function multiplayer(){
-    multiplayerMode = true;
-    playerMode = 2
-}
 
 
 
@@ -134,21 +129,27 @@ buttonPlayers.addEventListener("click",function(){
     playerMode = playerMode % 2;
     if(playerMode == 1){
         buttonPlayers.value = "Two player";
+        restartGame()
     }else{
         buttonPlayers.value = "One player";
+        restartGame()
     }
     console.log(playerMode)
 })
 
-let yourTurn= true;
-
 
 function input(e){
-    if(yourTurn){
+    console.log("got input")
+    if(yourTurn || multiplayerMode == false){
     e = parseInt(e);
     if(7>e && e >=0){
-        socket.emit("move",e);
-        //makeMove(e);
+        if(multiplayerMode){
+            console.log("move")
+            socket.emit("move",e);
+            makeMove(e);
+        }else{
+            makeMove(e);
+        }
     }
     yourTurn = false;
 }
@@ -191,7 +192,10 @@ function makeMove(col){
                         showWinner(player);
                     }
                     yourTurn = false;
+                    player++
+                    player = player % 2;
                     console.log("moved")
+                    message("Waiting for player to move")
                 } else{
                     console.log("not your turn")
                 }
@@ -208,10 +212,10 @@ function showWinner(player = 0){
     drawGrid()
     winDiv.hidden = false;
     if(player == 1){
-        winDiv.style.background = "#fa5050";
+        winDiv.style.background = "#fa5050aa";
         winDiv.innerText = "Red is the winner"
     }else{
-        winDiv.style.background = "#f1fa50";
+        winDiv.style.background = "#f1fa50aa";
         winDiv.innerText = "Yellow is the winner"
     }
 }
@@ -418,7 +422,7 @@ function resizeCanvas() {
         windowSize = window.innerWidth
     }
     canvas.width = windowSize;
-    canvas.height = windowSize;
+    canvas.height = windowSize/6 *5;
     drawGrid()
 }
 
@@ -427,12 +431,14 @@ function drawGrid(){
     if(player==1){
         ctx.fillStyle = "#ffec5b"
         ctx.fillRect(0,0,canvas.width,boardY)
+        document.body.style.backgroundColor = "#ffec5b"
     }else{
         ctx.fillStyle = "#ff5050"
         ctx.fillRect(0,0,canvas.width,boardY)
+        document.body.style.backgroundColor = "#ff5050"
     }
     ctx.fillStyle = "#4551f7"
-    ctx.fillRect(0,canvas.width -boardY,canvas.width,boardY)
+    ctx.fillRect(0,0,canvas.width,canvas.height)
     for(let row=0;row<rowCount;row++){
         for(let col=0;col<columnCount;col++){
             let size = canvas.width/13;
