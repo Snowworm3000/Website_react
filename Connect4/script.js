@@ -11,8 +11,8 @@ function multiplayer(){
     restartGame()
     yourTurn = false;
 
-    //socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
-    socket = io("http://localhost:3000")
+    socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
+    //socket = io("http://localhost:3000")
 
     message("Waiting for player")
 
