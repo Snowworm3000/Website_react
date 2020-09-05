@@ -4,14 +4,15 @@ let multiplayerMode = false;
 let socket;
 const messageContainer = document.getElementById("message-container")
 let yourTurn = true;
+let username = "";
 
 function multiplayer(){
     
     restartGame()
     yourTurn = false;
 
-    socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
-    //socket = io("http://localhost:3000")
+    //socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
+    socket = io("http://localhost:3000")
 
     message("Waiting for player")
 
@@ -44,6 +45,7 @@ function multiplayer(){
         console.log("start game", val)
         yourTurn = true;
         message("Game has started, your turn")
+        restartGame();
     })
 
     socket.on("move", move=>{
@@ -73,17 +75,64 @@ function multiplayer(){
         message("Your turn")
     })
 
-
-    function clearDiv(){
-        messageElement = document.getElementById("div")
-        messageElement.innerText = ""
+    username = prompt("Player name \n(leave blank if you do not want to play with friends)")
+    if(username != ""){
+        socket.emit('name',username)
     }
-    function appendMessage(message) {
-        const messageElement = document.getElementById("div")
+
+    socket.on('invalidName', ()=>{
+        console.log("invalid name")
+        username = prompt("Player name \n(leave blank if you do not want to play with friends)")
+        socket.emit('name',username)
+
+    })
+
+    socket.on('promptJoinRoom', roomName=>{
+        console.log("recieved request")
+        let ask = prompt("A user would like to play against you. Join? y/n")
+        if(ask == "y"){
+            socket.emit('joinRoom', roomName);
+            console.log(roomName,"join")
+        }
+    })
+
+    socket.on('getOnlinePlayers', playersArray =>{
+        printPlayers(playersArray);
+    })
+
+    function printPlayers(players){
+        clearDiv();
+        console.log(players)
+        players.splice(players.indexOf(username),1);
+        appendMessage(players);
+    }
+
+}
+
+function refreshPlayers(){
+    socket.emit('refreshPlayers')
+}
+
+function clearDiv(){
+    messageElement = document.getElementById("div")
+    messageElement.innerText = ""
+}
+function appendMessage(message) {
+    const messageElement = document.getElementById("div")
+    if(typeof(message) == "object"){
+        for(i in message){
+            messageElement.innerHTML += message[i] + "<input type='button' value='join game' onclick='joinGame("+'"'+message[i]+'"'+")'>" + "<br>"
+        }
+    } else{
         messageElement.innerHTML += message + "<br>"
-        messageContainer.append(messageElement)
     }
+    messageContainer.append(messageElement)
+}
 
+function joinGame(name){
+    console.log(name)
+    socket.emit('promptPlayer', name)
+    socket.emit('joinRoom', name)
 }
 
 function selectRoom(room){
@@ -130,9 +179,14 @@ buttonPlayers.addEventListener("click",function(){
     if(playerMode == 1){
         buttonPlayers.value = "Two player";
         restartGame()
+        multiplayerMode = false
+        messageBox.hidden = true
+        socket.disconnect()
     }else{
         buttonPlayers.value = "One player";
         restartGame()
+        multiplayerMode = false
+        socket.disconnect()
     }
     console.log(playerMode)
 })

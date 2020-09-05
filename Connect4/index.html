@@ -18,7 +18,8 @@
     </div>
     <input type="button" value="Two player" id="players">
     <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
-    <input type="text" onchange="selectRoom(this.value)">
+    <input type="text" placeholder="select room" onchange="selectRoom(this.value)">
+    <input type="button" value="refresh player list" onclick="refreshPlayers()">
     <div id="message-container"></div>
     <div id="div"></div>
 </body>
