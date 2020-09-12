@@ -39,6 +39,23 @@ body{
     opacity:0;
 }
 
+.playerList{
+    margin: 10px;
+    border: solid;
+    padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    background-color: rgba(21, 76, 255, 0.8);
+    border-radius: 10px;
+    height: 100px;
+}
+
+.playerElement{
+    flex:1 1 auto;
+    margin:5px;
+}
+
 @media only screen and (orientation: portrait){
     .box{
         width:40vw;

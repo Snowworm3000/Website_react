@@ -6,13 +6,18 @@ const messageContainer = document.getElementById("message-container")
 let yourTurn = true;
 let username = "";
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+let waitingForResponse = false;
+let canRestart = true;
 function multiplayer(){
-    
+
     restartGame()
     yourTurn = false;
 
-    socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
-    //socket = io("http://localhost:3000")
+    //socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
+    socket = io("http://localhost:3000")
 
     message("Waiting for player")
 
@@ -37,8 +42,24 @@ function multiplayer(){
         console.log(playerNo)
     })
 
-    socket.on("userLeft", val=>{
-        message("user disconnected")
+    socket.on("userLeft", function(val){
+        if(waitingForResponse){
+            message("Waiting for response")
+        } else if(canRestart == false){
+            console.log("wont restart boiiiiiiiiiiiiiiiiii")
+        }else{
+            message("user disconnected")
+            //await sleep(1000)
+
+            restartGame()
+            yourTurn = false;
+            playerMode = 2
+            multiplayerMode = true;
+            console.log("reconnecting")
+            //socket.emit('reconnect', "i")
+
+            socket.emit('restart', "oiwheorihiohr");
+        }
     })
 
     socket.on("startGame", val =>{
@@ -93,6 +114,7 @@ function multiplayer(){
         if(ask == "y"){
             socket.emit('joinRoom', roomName);
             console.log(roomName,"join")
+            canRestart = false;
         }
     })
 
@@ -121,7 +143,7 @@ function appendMessage(message) {
     const messageElement = document.getElementById("div")
     if(typeof(message) == "object"){
         for(i in message){
-            messageElement.innerHTML += message[i] + "<input type='button' value='join game' onclick='joinGame("+'"'+message[i]+'"'+")'>" + "<br>"
+            messageElement.innerHTML += "<div class='playerElement'>" + message[i] + "<input type='button' value='join game' onclick='joinGame("+'"'+message[i]+'"'+")'></div>" + "<br>"
         }
     } else{
         messageElement.innerHTML += message + "<br>"
@@ -130,6 +152,7 @@ function appendMessage(message) {
 }
 
 function joinGame(name){
+    waitingForResponse = true;
     console.log(name)
     socket.emit('promptPlayer', name)
     socket.emit('joinRoom', name)
@@ -426,6 +449,7 @@ function printBoard(){
 
 function restartGame(){
     winDiv.hidden = true;
+    canRestart = true;
     board = makeBoard();
     playing = true;
     drawGrid();
