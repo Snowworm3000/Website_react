@@ -269,7 +269,28 @@ function addPiece(x,y){
     boardCopy = board.slice()
 
     //boardCopy[y][x] = 1
+    let checking = false
 
+    if(lineAfterMove(x,y, currentPlayer)){
+        lineAfterMove(x,y,currentPlayer,true)
+        currentPlayer = nextPlayer(currentPlayer,2)
+        checking = true
+        console.log("possible")
+    }else{
+        checking = false
+        console.log("not possible")
+    }
+    while(checking){
+        console.log("possibleYEEE")
+        if(lineAfterMove(x,y, currentPlayer)){
+            lineAfterMove(x,y,currentPlayer,true)
+        }else{
+            checking = false
+            console.log("exit")
+        }
+    }
+
+    /*
     if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")
         lineAfterMove(x,y,currentPlayer,true)
@@ -282,6 +303,7 @@ function addPiece(x,y){
         console.log("not possible")
         printBoard(board)
     }
+    */
 }
 
 
