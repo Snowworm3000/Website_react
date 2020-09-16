@@ -82,7 +82,10 @@ function isPossibleMove(x,y,players){
 function lineAfterMove(x,y,playerColour,set){
     
     let oppositeColour = [2,1][playerColour-1]
+    let check=0
 
+    check = y+1
+    if(8>check && check >= 0){
     if(board[y+1][x] == oppositeColour){
         for(let row = y; row<8-y;row++){ //Vertical down
             if(board[row][x] == 0 && row!=y){
@@ -96,8 +99,10 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
     
-    
+    check = y-1
+    if(8>check && check >= 0){
     if(board[y-1][x] == oppositeColour){
         for(let row = y; row>0;row--){ //Vertical up
             if(board[row][x] == 0 && row!=y){
@@ -111,7 +116,11 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
 
+    check = x+1
+    console.log(check,x,y)
+    if(8>check && check >= 0){
     if(board[y][x+1] == oppositeColour){
         for(let col = x; col<8-x;col++){ //Horizontal right
             if(board[y][col] == 0 && col!=x){
@@ -125,7 +134,10 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
 
+    check = x-1
+    if(8>check && check >= 0){
     if(board[y][x-1] == oppositeColour){
         for(let col = x; col>0;col--){ //Horizontal left
             if(board[y][col] == 0 && col!=x){
@@ -139,10 +151,12 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
 
 
     
-
+    check = [y-1,x-1]
+    if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y-1][x-1] == oppositeColour){
         let row = y
         for(let col = x; col>0; col--){ //Diagonal right before
@@ -161,8 +175,11 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
     //console.log("next                                    t")
     
+    check = [y+1,x+1]
+    if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y+1][x+1] == oppositeColour){
         row = y
         for(let col = x; col<8-x; col++){ //Diagonal right after
@@ -181,7 +198,10 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
     
+    check = [y-1,x+1]
+    if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y-1][x+1] == oppositeColour){
         row = y
         for(let col = x; col<8-x; col++){ //Diagonal left before
@@ -200,7 +220,10 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
     
+    check = [y+1,x-1]
+    if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
    if(board[y+1][x-1] == oppositeColour){
         row = y
         for(let col = x; col>0; col--){ //Diagonal left after
@@ -220,6 +243,7 @@ function lineAfterMove(x,y,playerColour,set){
             }
         }
     }
+    }
     return false
 }
 
@@ -233,27 +257,27 @@ function nextPlayer(currentPlayer,ammount){ //Alternates between players
 }
 
 let currentPlayer = 1
-function addPiece(){
-    currentPlayer = nextPlayer(currentPlayer,2)
+function addPiece(x,y){
     console.log(currentPlayer)
-    x= prompt("x")
-    y= prompt("y")
+    //x= prompt("x")
+    //y= prompt("y")
 
-    x = parseInt(x) - 1
-    y = parseInt(y) - 1
+    // x = parseInt(x) - 1
+    // y = parseInt(y) - 1
 
     
     boardCopy = board.slice()
 
     //boardCopy[y][x] = 1
-    console.log("nleeeeeeeeee",lineAfterMove(x,y,1))
+    console.log("nleeeeeeeeee",lineAfterMove(x,y,currentPlayer))
 
-    if(lineAfterMove(x,y, 1)){
+    if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")
-        lineAfterMove(x,y,1,true)
-        board[y][x] = 1
+        lineAfterMove(x,y,currentPlayer,true)
+        board[y][x] = currentPlayer
         console.log("possible :)")
         printBoard(board)
+        currentPlayer = nextPlayer(currentPlayer,2)
         
     }else{
         console.log("not possible")
@@ -263,6 +287,205 @@ function addPiece(){
 
 
 printBoard(board)
+
+/*
 while(1){
     addPiece()
+}
+*/
+
+
+
+var canvas = document.getElementsByTagName('canvas')[0];
+canvas.width = canvas.height = 600;
+var ctx = canvas.getContext('2d');
+var circle = new Image;
+circle.onload = function(){ drawGrid() };
+circle.src='./Circle.svg';
+
+var cross = new Image;
+cross.onload = function(){ drawGrid() };
+cross.src='./Cross.svg';
+
+canvas.addEventListener('mousedown', function(e) {
+    getCursorPosition(canvas, e)
+})
+let boardS = 8
+
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    //console.log("x: " + x + " y: " + y)
+    let width = windowSize /boardS
+
+    function getLocation(co){
+        for(let i=boardS;i>=0;i--){
+            if(co>= width *i){
+                return i
+            }
+        }
+        return 0;
+    }
+
+    xSet = getLocation(x);
+    ySet = getLocation(y);
+    console.log(xSet);
+    console.log(ySet)
+
+    addPiece(xSet,ySet)
+    drawGrid()
+}
+
+function drawGrid(){
+    ctx.fillStyle = "#14bdac";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle = "#6bdbfa";
+
+    //let lineWidth = 10
+    let gridSize = 8
+    let lineWidth = (50/gridSize)*canvas.width/1000
+
+    for(let i = 1; i<gridSize;i++){
+        ctx.beginPath();
+        ctx.moveTo(windowSize /gridSize *i,0);
+        ctx.lineTo(windowSize /gridSize *i,windowSize);
+        ctx.lineWidth = lineWidth
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(0,windowSize /gridSize *i);
+        ctx.lineTo(windowSize,windowSize /gridSize *i);
+        ctx.lineWidth = lineWidth
+        ctx.stroke();
+    }
+
+    //ctx.drawImage(cross,300,0);
+    //ctx.drawImage(circle,300,0);
+    for(i in board){
+        let size = canvas.width / (boardS +2)
+        console.log(size)
+        let width = windowSize/boardS //-size
+        //let row = [0+ size/2,width + size,width*2 + size*2]
+        let row = Array.from(Array(parseInt(gridSize)), (_, i) => i + 1)
+        console.log(row)
+        for(j in board[i]){
+            if(board[i][j] == 1){
+                locationX = windowSize /boardS * row[j] - windowSize/boardS/2
+                locationY = windowSize /boardS * row[i] - windowSize/boardS/2
+                ctx.drawImage(circle, locationX-size/2,locationY-size/2,size,size);
+            }
+            else if(board[i][j] == 2){
+                locationX = windowSize /boardS * row[j] - windowSize/boardS/2
+                locationY = windowSize /boardS * row[i] - windowSize/boardS/2
+                ctx.drawImage(cross, locationX-size/2,locationY-size/2,size,size);
+            }
+        }
+    }
+
+    ctx.strokeStyle = "#000000";
+    let playingGame = true
+    if(playingGame == false){
+        if(winType == 1){
+            console.log("Diagonal right")
+            let i=1;
+            animate();
+            function animate(){
+                if(i< canvas.width*0.5){ requestAnimationFrame(animate)}
+                    ctx.beginPath();
+                    ctx.moveTo(0,0);
+                    ctx.lineTo(i,i);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width, canvas.height);
+                    ctx.lineTo(canvas.width- i, canvas.height-i);
+                    ctx.stroke();
+                    i += 20;
+            }
+
+        } else if(winType==2){
+
+            let i=1;
+            animate();
+            function animate(){
+                if(i< canvas.width*0.5){ requestAnimationFrame(animate)}
+                    ctx.beginPath();
+                    ctx.moveTo(0,canvas.height);
+                    ctx.lineTo(i,canvas.width -i);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width,0);
+                    ctx.lineTo(canvas.width - i,i);
+                    ctx.stroke();
+                    i += 20;
+            }
+            
+        } else if(boardS*2 >winType){
+            console.log("Horizontal")
+            let direction = canvas.height/(boardS*2)*((winType*2)-5);
+
+            let i=1;
+            animate();
+            function animate(){
+                if(i< canvas.width*0.5){ requestAnimationFrame(animate)}
+                    ctx.beginPath();
+                    ctx.moveTo(0,direction);
+                    ctx.lineTo(i, direction);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(canvas.width,direction);
+                    ctx.lineTo(canvas.width-i,direction);
+                    ctx.stroke();
+                    i += 20;
+            }
+
+        } else if(boardS*3>winType){
+            console.log("Vertical")
+            let direction = canvas.height/(boardS *2)*((((winType - (3+boardS)) - boardS+3)*2)+1);
+
+            let i=1;
+            animate();
+            function animate(){
+                if(i< canvas.width*0.5){ requestAnimationFrame(animate)}
+                    ctx.beginPath();
+                    ctx.moveTo(direction,0);
+                    ctx.lineTo(direction,i);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(direction,canvas.width);
+                    ctx.lineTo(direction,canvas.width-i);
+                    ctx.stroke();
+                    i += 20;
+            }
+        }
+    }
+}
+
+initialize();
+
+function initialize() {
+    // Register an event listener to call the resizeCanvas() function 
+    // each time the window is resized.
+    window.addEventListener('resize', resizeCanvas, false);
+    // Draw canvas border for the first time.
+    resizeCanvas();
+}
+
+// Runs each time the DOM window resize event fires.
+// Resets the canvas dimensions to match window,
+// then draws the new borders accordingly.
+function resizeCanvas() {
+    if(window.innerWidth > window.innerHeight){
+        windowSize = window.innerHeight -200
+    }else{
+        windowSize = window.innerWidth -100
+    }
+    canvas.width = windowSize;
+    canvas.height = windowSize;
+    drawGrid()
 }
