@@ -269,7 +269,6 @@ function addPiece(x,y){
     boardCopy = board.slice()
 
     //boardCopy[y][x] = 1
-    console.log("nleeeeeeeeee",lineAfterMove(x,y,currentPlayer))
 
     if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")
