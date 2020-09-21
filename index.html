@@ -5,13 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        function closeNav(){
+            document.getElementById("sidebar").style.width = "0";
+            document.body.style.marginRight = "0";
+        }
+
+        function openNav(){
+            document.getElementById("sidebar").style.width = "250px";
+            document.body.style.marginRight = "250px";
+        }
+    </script>
 </head>
 <body>
     <header>
-        <p>Ethan's coding website</p>
+        <div></div>
+        <div class="centerDiv"><p>Ethan's coding website</p></div>
+        <div class="topRight" onclick="openNav()"><img src="navBar.svg" width="40px" height="40px"></div>
+
     </header>
+
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+    </div>
+
+
     <div class="category" id="games">
-        <p class="center">Games</p>
+        <p class="center bg">Games</p>
     <div class="box">
         <div class="site">
             <a href="Noughts and crosses/index.html">
@@ -46,6 +66,22 @@
             </a>
         </div>
     </div>
+    </div>
+
+    <div class="category" id="experiments">
+        <p class="center bg">Experiments</p>
+        <div class="box">
+            <div class="site">
+                <a href="Experiments/RandomBackground/index.html">
+                <p class="center">Random background</p>
+                </a>
+            </div>
+            <div class="site">
+                <a href="Experiments/SimonSays/index.html">
+                <p class="center">Simon says</p>
+                </a>
+            </div>
+        </div>
     </div>
     
 </body>

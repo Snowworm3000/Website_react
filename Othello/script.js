@@ -270,6 +270,7 @@ function addPiece(x,y){
 
     //boardCopy[y][x] = 1
     let checking = false
+    let checkCount = 1
 
     if(lineAfterMove(x,y, currentPlayer)){
         lineAfterMove(x,y,currentPlayer,true)
@@ -278,11 +279,13 @@ function addPiece(x,y){
         console.log("possible")
     }else{
         checking = false
+        checkCount = 0
         console.log("not possible")
     }
     while(checking){
         console.log("possibleYEEE")
         if(lineAfterMove(x,y, currentPlayer)){
+            checkCount++
             lineAfterMove(x,y,currentPlayer,true)
         }else{
             checking = false
@@ -290,6 +293,7 @@ function addPiece(x,y){
         }
     }
 
+    console.log("checkCount",checkCount)
     /*
     if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")

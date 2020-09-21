@@ -5,16 +5,31 @@ body{
 
     display: flex;
   flex-direction: column;
+  transition: 0.4s;
 }
-
-img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
-    display:none;
-    }
 
 header{
     overflow: hidden;
     background-color: rgba(23, 125, 255, 0.7);
     padding: 20px 10px;
+    display: flex;
+    align-items: flex-start;
+    border-bottom-left-radius: 20px;
+}
+
+.centerDiv{
+    align-self: center;
+    border-style: solid;
+    border-radius: 4px;
+}
+.centerDiv p{
+    align-self: center;
+    margin: auto auto;
+    text-align: center;
+}
+
+.topRight img{
+    float: right;
 }
 
 img {
@@ -23,17 +38,13 @@ img {
 }
 
 header > * {
-    float: left;
+    flex: 1;
     color: white;
-    text-align: center;
     padding: 12px;
-    margin-left: 0.2em;
     text-decoration: none;
     font-size: 18px; 
     line-height: 25px;
-    border-style: solid;
-    border-radius: 4px;
-  }
+}
 
 .footer{
     position: fixed;
@@ -101,4 +112,8 @@ a{
 
 .center{
     text-align:center;
+}
+
+.bg{
+    color: rgb(56, 56, 56);
 }
