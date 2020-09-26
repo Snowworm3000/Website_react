@@ -23,37 +23,39 @@ function printBoard(board){ //Prints the board to console for debuging
     }
 }
 
-function checkPossibleMoves(board){
+let possibleMoves;
+function checkPossibleMoves(board,currentPlayer){
+    possibleMoves = JSON.parse(JSON.stringify(board))
     let countPossible = 0
-    for(let players = 1; players<= 1; players++){
-        //console.log(players)
-        let boardCopy = board.slice()
-        for(let y=0; y<8;y++){
-            for(let x=0;x<8; x++){
-                boardPiece = board[y][x]
-                if(boardPiece != players && boardPiece == 1 || boardPiece==2){
-                    console.log("opposite colour", boardPiece)
-                    for(let difY = -1; difY<=1;difY++){
-                        for(let difX = -1; difX<=1;difX++){
-                            if(board[difY + y][difX + x] == 0){
-                                console.log(difX,difY)
-                                //console.log("Possible move",difX + x, difY+y)
-                                //console.log("my", x,y)
-                                //boardCopy[difY+y][difX+x] = "p" + players
-                                console.log("shenennnnnnnnnnnn",lineAfterMove(difX+x,difY+y, players))
-                                if(lineAfterMove(difX+x,difY+y, players)){
-                                    countPossible++
-                                }
+    console.log(currentPlayer)
+    for(let y=0; y<8;y++){
+        for(let x=0;x<8; x++){
+            boardPiece = board[y][x]
+            if(boardPiece != currentPlayer && boardPiece == 1 || boardPiece==2){
+                console.log("opposite colour", boardPiece)
+                for(let difY = -1; difY<=1;difY++){
+                    for(let difX = -1; difX<=1;difX++){
+                        check = [difX+x,difY+y]
+                        if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
+                        if(board[difY + y][difX + x] == 0){
+                            console.log(difX,difY)
+                            //console.log("Possible move",difX + x, difY+y)
+                            //console.log("my", x,y)
+                            //boardCopy[difY+y][difX+x] = "p" + currentPlayer
+                            console.log("shenennnnnnnnnnnn",lineAfterMove(difX+x,difY+y, currentPlayer))
+                            if(lineAfterMove(difX+x,difY+y, currentPlayer)){
+                                possibleMoves[difY+y][difX+x] = "p"+currentPlayer
                             }
+                        }
                         }
                     }
                 }
             }
         }
-        //printBoard(boardCopy)
-        //console.log("break")
-        //printBoard(board)
     }
+    //printBoard(boardCopy)
+    //console.log("break")
+    //printBoard(board)
     return countPossible > 0
 }
 
@@ -86,17 +88,23 @@ function lineAfterMove(x,y,playerColour,set){
 
     check = y+1
     if(8>check && check >= 0){
+        console.log("yay")
     if(board[y+1][x] == oppositeColour){
-        for(let row = y; row<8-y;row++){ //Vertical down
+        console.log("way")
+        for(let row = y; row<8;row++){ //Vertical down
             if(board[row][x] == 0 && row!=y){
+                console.log("break")
                 break
             }
             if(board[row][x] == playerColour && row > y+1){
                 //board[y][x] = "p" + playerColour
+                console.log("return yaaa")
                 return 1
-            }else if(set){
+            }else if(set == 1){
+                console.log("set")
                 board[row][x] = playerColour
             }
+            // console.log("done", row,x,y,8-y)
         }
     }
     }
@@ -104,14 +112,14 @@ function lineAfterMove(x,y,playerColour,set){
     check = y-1
     if(8>check && check >= 0){
     if(board[y-1][x] == oppositeColour){
-        for(let row = y; row>0;row--){ //Vertical up
+        for(let row = y; row>=0;row--){ //Vertical up
             if(board[row][x] == 0 && row!=y){
                 break
             }
             if(board[row][x] == playerColour && row < y-1){
                 //board[y][x] = "p" + playerColour
                 return 2
-            }else if(set){
+            }else if(set == 2){
                 board[row][x] = playerColour
             }
         }
@@ -122,31 +130,32 @@ function lineAfterMove(x,y,playerColour,set){
     console.log(check,x,y)
     if(8>check && check >= 0){
     if(board[y][x+1] == oppositeColour){
-        for(let col = x; col<8-x;col++){ //Horizontal right
+        for(let col = x; col<8;col++){ //Horizontal right
             if(board[y][col] == 0 && col!=x){
                 break
             }
             if(board[y][col] == playerColour && col > x+1){
                 //board[y][x] = "p" + playerColour
                 return 3
-            }else if(set){
+            }else if(set == 3){
                 board[y][col] = playerColour
             }
         }
     }
     }
 
+    console.log("GOOGOGO")
     check = x-1
     if(8>check && check >= 0){
     if(board[y][x-1] == oppositeColour){
-        for(let col = x; col>0;col--){ //Horizontal left
+        for(let col = x; col>=0;col--){ //Horizontal left
             if(board[y][col] == 0 && col!=x){
                 break
             }
             if(board[y][col] == playerColour && col < x-1){
                 //board[y][x] = "p" + playerColour
                 return 4
-            }else if(set){
+            }else if(set == 4){
                 board[y][col] = playerColour
             }
         }
@@ -159,8 +168,8 @@ function lineAfterMove(x,y,playerColour,set){
     if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y-1][x-1] == oppositeColour){
         let row = y
-        for(let col = x; col>0; col--){ //Diagonal right before
-            if(row>0){
+        for(let col = x; col>=0; col--){ //Diagonal right before
+            if(row>=0){
                 if(board[row][col] == 0 && col!=x){
                     break
                 }
@@ -168,7 +177,7 @@ function lineAfterMove(x,y,playerColour,set){
                 if(board[row][col] == playerColour && row<y-1){
                     //board[y][x] = "p" + playerColour
                     return 5
-                }else if(set){
+                }else if(set == 5){
                     board[row][col] = playerColour
                 }
                 row--
@@ -182,8 +191,8 @@ function lineAfterMove(x,y,playerColour,set){
     if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y+1][x+1] == oppositeColour){
         row = y
-        for(let col = x; col<8-x; col++){ //Diagonal right after
-            if(row<8-y){
+        for(let col = x; col<8; col++){ //Diagonal right after
+            if(row<8){
                 if(board[row][col] == 0 && col!=x){
                     break
                 }
@@ -191,7 +200,7 @@ function lineAfterMove(x,y,playerColour,set){
                 if(board[row][col] == playerColour && row>y+1){
                     //board[y][x] = "p" + playerColour
                     return 6
-                }else if(set){
+                }else if(set == 6){
                     board[row][col] = playerColour
                 }
                 row++
@@ -204,8 +213,8 @@ function lineAfterMove(x,y,playerColour,set){
     if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
     if(board[y-1][x+1] == oppositeColour){
         row = y
-        for(let col = x; col<8-x; col++){ //Diagonal left before
-            if(row>0){
+        for(let col = x; col<8; col++){ //Diagonal left before
+            if(row>=0){
                 if(board[row][col] == 0 && col!=x){
                     break
                 }
@@ -213,7 +222,7 @@ function lineAfterMove(x,y,playerColour,set){
                 if(board[row][col] == playerColour && row<y-1){
                     //board[y][x] = "p" + playerColour
                     return 7
-                }else if(set){
+                }else if(set == 7){
                         board[row][col] = playerColour
                     }
                 row--
@@ -226,8 +235,8 @@ function lineAfterMove(x,y,playerColour,set){
     if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
    if(board[y+1][x-1] == oppositeColour){
         row = y
-        for(let col = x; col>0; col--){ //Diagonal left after
-            if(row<8-y){
+        for(let col = x; col>=0; col--){ //Diagonal left after
+            if(row<8){
                 if(board[row][col] == 0 && col!=x){
                     break
                 }
@@ -236,7 +245,7 @@ function lineAfterMove(x,y,playerColour,set){
                     console.log("NOOOOOOOOO",col,row,x,y)
                     //board[y][x] = "p" + playerColour
                     return 8
-                }else if(set){
+                }else if(set == 8){
                     board[row][col] = playerColour
                 }
                 row++
@@ -257,6 +266,7 @@ function nextPlayer(currentPlayer,ammount){ //Alternates between players
 }
 
 let currentPlayer = 1
+checkPossibleMoves(board,currentPlayer)
 function addPiece(x,y){
     console.log(currentPlayer)
     //x= prompt("x")
@@ -268,32 +278,50 @@ function addPiece(x,y){
     
     boardCopy = board.slice()
 
+    if(board[y][x] != 0){
+        console.log("returned hahaha",x,y)
+        return
+    }
+
     //boardCopy[y][x] = 1
     let checking = false
     let checkCount = 1
 
-    if(lineAfterMove(x,y, currentPlayer)){
-        lineAfterMove(x,y,currentPlayer,true)
-        currentPlayer = nextPlayer(currentPlayer,2)
+    let lastLine = 0
+
+    let possible = true;
+
+    console.log(x,y,currentPlayer,"YOQBOBQOIBOIV")
+
+    lastLine = lineAfterMove(x,y, currentPlayer)
+    if(lastLine){
+        lineAfterMove(x,y,currentPlayer,lastLine)
         checking = true
         console.log("possible")
     }else{
         checking = false
         checkCount = 0
         console.log("not possible")
+        possible = false
     }
     while(checking){
         console.log("possibleYEEE")
-        if(lineAfterMove(x,y, currentPlayer)){
+        lastLine = lineAfterMove(x,y, currentPlayer)
+        console.log(lastLine,currentPlayer,x,y,"EEEEEEE")
+        if(lastLine){
             checkCount++
-            lineAfterMove(x,y,currentPlayer,true)
+            lineAfterMove(x,y,currentPlayer,lastLine)
         }else{
             checking = false
             console.log("exit")
         }
     }
-
+    if(possible){
+        currentPlayer = nextPlayer(currentPlayer,2)
+    }
     console.log("checkCount",checkCount)
+    console.log("CURRENT PLAYER", currentPlayer)
+    checkPossibleMoves(board,currentPlayer)
     /*
     if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")
@@ -324,13 +352,21 @@ while(1){
 var canvas = document.getElementsByTagName('canvas')[0];
 canvas.width = canvas.height = 600;
 var ctx = canvas.getContext('2d');
-var circle = new Image;
-circle.onload = function(){ drawGrid() };
-circle.src='./Circle.svg';
+var black = new Image;
+black.onload = function(){ drawGrid(possibleMoves) };
+black.src='./Black.svg';
 
-var cross = new Image;
-cross.onload = function(){ drawGrid() };
-cross.src='./Cross.svg';
+var white = new Image;
+white.onload = function(){ drawGrid(possibleMoves) };
+white.src='./White.svg';
+
+var blackT = new Image;
+blackT.onload = function(){ drawGrid(possibleMoves) };
+blackT.src='./BlackT.svg';
+
+var whiteT = new Image;
+whiteT.onload = function(){ drawGrid(possibleMoves) };
+whiteT.src='./WhiteT.svg';
 
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
@@ -359,14 +395,14 @@ function getCursorPosition(canvas, event) {
     console.log(ySet)
 
     addPiece(xSet,ySet)
-    drawGrid()
+    drawGrid(possibleMoves)
 }
 
-function drawGrid(){
-    ctx.fillStyle = "#14bdac";
+function drawGrid(board){
+    ctx.fillStyle = "#008B61";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
-    ctx.strokeStyle = "#6bdbfa";
+    ctx.strokeStyle = "#000";
 
     //let lineWidth = 10
     let gridSize = 8
@@ -390,21 +426,31 @@ function drawGrid(){
     //ctx.drawImage(circle,300,0);
     for(i in board){
         let size = canvas.width / (boardS +2)
-        console.log(size)
+        //console.log(size)
         let width = windowSize/boardS //-size
         //let row = [0+ size/2,width + size,width*2 + size*2]
         let row = Array.from(Array(parseInt(gridSize)), (_, i) => i + 1)
-        console.log(row)
+        //console.log(row)
         for(j in board[i]){
             if(board[i][j] == 1){
                 locationX = windowSize /boardS * row[j] - windowSize/boardS/2
                 locationY = windowSize /boardS * row[i] - windowSize/boardS/2
-                ctx.drawImage(circle, locationX-size/2,locationY-size/2,size,size);
+                ctx.drawImage(black, locationX-size/2,locationY-size/2,size,size);
             }
             else if(board[i][j] == 2){
                 locationX = windowSize /boardS * row[j] - windowSize/boardS/2
                 locationY = windowSize /boardS * row[i] - windowSize/boardS/2
-                ctx.drawImage(cross, locationX-size/2,locationY-size/2,size,size);
+                ctx.drawImage(white, locationX-size/2,locationY-size/2,size,size);
+            }
+            else if(board[i][j] == "p1"){
+                locationX = windowSize /boardS * row[j] - windowSize/boardS/2
+                locationY = windowSize /boardS * row[i] - windowSize/boardS/2
+                ctx.drawImage(blackT, locationX-size/2,locationY-size/2,size,size);
+            }
+            else if(board[i][j] == "p2"){
+                locationX = windowSize /boardS * row[j] - windowSize/boardS/2
+                locationY = windowSize /boardS * row[i] - windowSize/boardS/2
+                ctx.drawImage(whiteT, locationX-size/2,locationY-size/2,size,size);
             }
         }
     }
@@ -512,5 +558,5 @@ function resizeCanvas() {
     }
     canvas.width = windowSize;
     canvas.height = windowSize;
-    drawGrid()
+    drawGrid(possibleMoves)
 }
