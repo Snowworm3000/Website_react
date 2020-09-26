@@ -13,8 +13,6 @@ function createBoard(){ //Create array with 8 subarrays containing all 0s repres
     board[4][3] = 2
     board[4][4] = 1
     //board[5][5] = 1
-    console.log(board)
-    console.log("END")
 }
 
 function printBoard(board){ //Prints the board to console for debuging
@@ -23,28 +21,52 @@ function printBoard(board){ //Prints the board to console for debuging
     }
 }
 
+function restartGame(){
+    currentPlayer = 1
+    createBoard()
+    checkPossibleMoves(board,currentPlayer)
+    drawGrid(possibleMoves)
+}
+
+const buttonPlayers = document.getElementById("buttonMode");
+
+let gameMode = 1;
+buttonPlayers.addEventListener("click",function(){
+    gameMode++
+    gameMode = gameMode % 2;
+    if(gameMode == 1){
+        buttonPlayers.value = "Two player";
+        restartGame()
+    }else{
+        buttonPlayers.value = "One player";
+        restartGame()
+    }
+})
+
 let possibleMoves;
-function checkPossibleMoves(board,currentPlayer){
+function checkPossibleMoves(board,currentPlayer,comp){
     possibleMoves = JSON.parse(JSON.stringify(board))
     let countPossible = 0
-    console.log(currentPlayer)
+    let computerMoves = []
     for(let y=0; y<8;y++){
         for(let x=0;x<8; x++){
             boardPiece = board[y][x]
             if(boardPiece != currentPlayer && boardPiece == 1 || boardPiece==2){
-                console.log("opposite colour", boardPiece)
                 for(let difY = -1; difY<=1;difY++){
                     for(let difX = -1; difX<=1;difX++){
                         check = [difX+x,difY+y]
                         if(8>check[0] && check[0] >= 0 && 8>check[1] && check[1] >= 0){
                         if(board[difY + y][difX + x] == 0){
-                            console.log(difX,difY)
                             //console.log("Possible move",difX + x, difY+y)
                             //console.log("my", x,y)
                             //boardCopy[difY+y][difX+x] = "p" + currentPlayer
-                            console.log("shenennnnnnnnnnnn",lineAfterMove(difX+x,difY+y, currentPlayer))
+                            // console.log("shenennnnnnnnnnnn",lineAfterMove(difX+x,difY+y, currentPlayer))
                             if(lineAfterMove(difX+x,difY+y, currentPlayer)){
-                                possibleMoves[difY+y][difX+x] = "p"+currentPlayer
+                                if(comp){
+                                    computerMoves.push([difX+x,difY+y])
+                                }else{
+                                    possibleMoves[difY+y][difX+x] = "p"+currentPlayer
+                                }
                             }
                         }
                         }
@@ -56,7 +78,11 @@ function checkPossibleMoves(board,currentPlayer){
     //printBoard(boardCopy)
     //console.log("break")
     //printBoard(board)
-    return countPossible > 0
+    if(comp){
+        return computerMoves;
+    }
+    return false
+    // return countPossible > 0
 }
 
 /*
@@ -88,20 +114,15 @@ function lineAfterMove(x,y,playerColour,set){
 
     check = y+1
     if(8>check && check >= 0){
-        console.log("yay")
     if(board[y+1][x] == oppositeColour){
-        console.log("way")
         for(let row = y; row<8;row++){ //Vertical down
             if(board[row][x] == 0 && row!=y){
-                console.log("break")
                 break
             }
             if(board[row][x] == playerColour && row > y+1){
                 //board[y][x] = "p" + playerColour
-                console.log("return yaaa")
                 return 1
             }else if(set == 1){
-                console.log("set")
                 board[row][x] = playerColour
             }
             // console.log("done", row,x,y,8-y)
@@ -127,7 +148,6 @@ function lineAfterMove(x,y,playerColour,set){
     }
 
     check = x+1
-    console.log(check,x,y)
     if(8>check && check >= 0){
     if(board[y][x+1] == oppositeColour){
         for(let col = x; col<8;col++){ //Horizontal right
@@ -144,7 +164,6 @@ function lineAfterMove(x,y,playerColour,set){
     }
     }
 
-    console.log("GOOGOGO")
     check = x-1
     if(8>check && check >= 0){
     if(board[y][x-1] == oppositeColour){
@@ -242,7 +261,6 @@ function lineAfterMove(x,y,playerColour,set){
                 }
 
                 if(board[row][col] == playerColour && row>y+1){
-                    console.log("NOOOOOOOOO",col,row,x,y)
                     //board[y][x] = "p" + playerColour
                     return 8
                 }else if(set == 8){
@@ -265,10 +283,13 @@ function nextPlayer(currentPlayer,ammount){ //Alternates between players
     return currentPlayer
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 let currentPlayer = 1
 checkPossibleMoves(board,currentPlayer)
-function addPiece(x,y){
-    console.log(currentPlayer)
+async function addPiece(x,y){
     //x= prompt("x")
     //y= prompt("y")
 
@@ -279,49 +300,26 @@ function addPiece(x,y){
     boardCopy = board.slice()
 
     if(board[y][x] != 0){
-        console.log("returned hahaha",x,y)
         return
     }
 
     //boardCopy[y][x] = 1
-    let checking = false
-    let checkCount = 1
 
-    let lastLine = 0
 
-    let possible = true;
 
-    console.log(x,y,currentPlayer,"YOQBOBQOIBOIV")
+    makeMove(x,y)
 
-    lastLine = lineAfterMove(x,y, currentPlayer)
-    if(lastLine){
-        lineAfterMove(x,y,currentPlayer,lastLine)
-        checking = true
-        console.log("possible")
-    }else{
-        checking = false
-        checkCount = 0
-        console.log("not possible")
-        possible = false
-    }
-    while(checking){
-        console.log("possibleYEEE")
-        lastLine = lineAfterMove(x,y, currentPlayer)
-        console.log(lastLine,currentPlayer,x,y,"EEEEEEE")
-        if(lastLine){
-            checkCount++
-            lineAfterMove(x,y,currentPlayer,lastLine)
-        }else{
-            checking = false
-            console.log("exit")
-        }
-    }
-    if(possible){
-        currentPlayer = nextPlayer(currentPlayer,2)
-    }
-    console.log("checkCount",checkCount)
-    console.log("CURRENT PLAYER", currentPlayer)
+    // console.log("checkCount",checkCount)
     checkPossibleMoves(board,currentPlayer)
+    drawGrid(possibleMoves)
+
+    await sleep(1000)
+
+    if(gameMode == 0){
+        console.log("comp move")
+        compMove()
+        checkPossibleMoves(board,currentPlayer)
+    }
     /*
     if(lineAfterMove(x,y, currentPlayer)){
         console.log("NOT")
@@ -336,6 +334,56 @@ function addPiece(x,y){
         printBoard(board)
     }
     */
+}
+
+function makeMove(x,y){
+    let checking = false
+    let lastLine = 0
+    let possible = true;
+    let checkCount = 1
+
+    lastLine = lineAfterMove(x,y, currentPlayer)
+    if(lastLine){
+        lineAfterMove(x,y,currentPlayer,lastLine)
+        checking = true
+        console.log("possible")
+    }else{
+        checking = false
+        checkCount = 0
+        console.log("not possible")
+        possible = false
+    }
+    while(checking){
+        lastLine = lineAfterMove(x,y, currentPlayer)
+        if(lastLine){
+            checkCount++
+            lineAfterMove(x,y,currentPlayer,lastLine)
+        }else{
+            checking = false
+            console.log("exit")
+        }
+    }
+    if(possible){
+        currentPlayer = nextPlayer(currentPlayer,2)
+    }
+}
+
+function random(max){
+    return Math.random()*max
+}
+
+function compMove(){
+    let possibleCompMoves = checkPossibleMoves(board,currentPlayer,true)
+    let choice = Math.round(random(possibleMoves.length))
+    if(possibleCompMoves.length == 0){
+        console.log("No moves available")
+    }
+    makeMove(possibleCompMoves[choice][0],possibleCompMoves[choice][1])
+
+    // currentPlayer = nextPlayer(currentPlayer,2)
+
+    checkPossibleMoves(board,currentPlayer)
+    drawGrid(possibleMoves)
 }
 
 
@@ -377,7 +425,6 @@ function getCursorPosition(canvas, event) {
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
-    //console.log("x: " + x + " y: " + y)
     let width = windowSize /boardS
 
     function getLocation(co){
@@ -391,11 +438,8 @@ function getCursorPosition(canvas, event) {
 
     xSet = getLocation(x);
     ySet = getLocation(y);
-    console.log(xSet);
-    console.log(ySet)
 
     addPiece(xSet,ySet)
-    drawGrid(possibleMoves)
 }
 
 function drawGrid(board){
@@ -426,11 +470,9 @@ function drawGrid(board){
     //ctx.drawImage(circle,300,0);
     for(i in board){
         let size = canvas.width / (boardS +2)
-        //console.log(size)
         let width = windowSize/boardS //-size
         //let row = [0+ size/2,width + size,width*2 + size*2]
         let row = Array.from(Array(parseInt(gridSize)), (_, i) => i + 1)
-        //console.log(row)
         for(j in board[i]){
             if(board[i][j] == 1){
                 locationX = windowSize /boardS * row[j] - windowSize/boardS/2
@@ -459,7 +501,7 @@ function drawGrid(board){
     let playingGame = true
     if(playingGame == false){
         if(winType == 1){
-            console.log("Diagonal right")
+            // console.log("Diagonal right")
             let i=1;
             animate();
             function animate(){
