@@ -5,28 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <script>
         function closeNav(){
             document.getElementById("sidebar").style.width = "0";
-            document.body.style.marginRight = "0";
         }
 
         function openNav(){
             document.getElementById("sidebar").style.width = "250px";
-            document.body.style.marginRight = "250px";
         }
     </script>
 </head>
 <body>
     <header>
-        <div></div>
-        <div class="centerDiv"><p>Ethan's coding website</p></div>
-        <div class="topRight" onclick="openNav()"><img src="navBar.svg" width="40px" height="40px"></div>
+        <div class="centerDiv">Ethan's coding website</div>
+        <div class="topRight">
+        <button class="navMenu" onclick="openNav()">☰</button>
+        </div>
 
     </header>
 
-    <div id="sidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">x</a>
+    <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+        <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+        <p class="w3-bar-item">Games:</p>
+        <a class="w3-bar-item w3-button" href="./Noughts and crosses/index.html">Noughts and crosses</a>
+        <a class="w3-bar-item w3-button" href="./Quiz/index.html">Quiz</a>
+        <a class="w3-bar-item w3-button" href="./Connect4/index.html">Connect four</a>
+        <a class="w3-bar-item w3-button" href="./Othello/index.html">Othello</a>
+        <p class="w3-bar-item">Experiments</p>
+        <a class="w3-bar-item w3-button" href="./Experiments/RandomBackground/index.html">Random background</a>
+        <a class="w3-bar-item w3-button" href="./Experiments/SimonSays/index.html">Simon says</a>
+        
     </div>
 
 
@@ -44,7 +53,7 @@
         <div class="site">
             <a href="Quiz/index.html">
             <div class="image">
-                <img src="/QuestionMark2.png">
+                <img src="/QuestionMark.svg">
             </div>
             <p class="center">Quiz</p>
             </a>

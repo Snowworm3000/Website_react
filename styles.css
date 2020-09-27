@@ -5,31 +5,49 @@ body{
 
     display: flex;
   flex-direction: column;
-  transition: 0.4s;
 }
 
 header{
     overflow: hidden;
     background-color: rgba(23, 125, 255, 0.7);
     padding: 20px 10px;
-    display: flex;
-    align-items: flex-start;
-    border-bottom-left-radius: 20px;
-}
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+} 
 
 .centerDiv{
-    align-self: center;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    text-align: center;
     border-style: solid;
     border-radius: 4px;
 }
-.centerDiv p{
-    align-self: center;
-    margin: auto auto;
-    text-align: center;
+
+.topRight{
+    margin: auto 0;
+    text-align: right;
+}
+
+.navMenu:hover{
+    color: black;
+    background-color: white;
+}
+
+.navMenu{
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: rgba(0, 0,0, 0);
+    font-size: 30px;
+    color: white;
 }
 
 .topRight img{
-    float: right;
+    padding: 0;
+    text-align: center;
+
+    width: 40px;
+    
 }
 
 img {
@@ -45,6 +63,28 @@ header > * {
     font-size: 18px; 
     line-height: 25px;
 }
+
+.sidebar{
+    transition: 0.4s;
+    right: 0;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    overflow: auto;
+    background-color: #fffffff5 !important;
+    color: black;
+    box-shadow: #000 0 0 10px;
+}
+
+.sidebar p{
+    color: black;
+}
+
+.closebtn{
+    text-align: right;
+}
+
 
 .footer{
     position: fixed;

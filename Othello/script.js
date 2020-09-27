@@ -25,7 +25,7 @@ function restartGame(){
     currentPlayer = 1
     createBoard()
     checkPossibleMoves(board,currentPlayer)
-    drawGrid(possibleMoves)
+    drawGridC(possibleMoves)
 }
 
 const buttonPlayers = document.getElementById("buttonMode");
@@ -296,6 +296,8 @@ function sleep(ms) {
 
 let currentPlayer = 1
 let ammountPossibleMoves = []
+
+let playerIndicator = document.getElementById("player");
 checkPossibleMoves(board,currentPlayer)
 function addPiece(x,y){
     //x= prompt("x")
@@ -309,14 +311,19 @@ function addPiece(x,y){
     boardCopy = board.slice()
 
     if(board[y][x] != 0){
+        console.log("returned")
         return
     }
+
+    // console.log("actually didnt")
 
     //boardCopy[y][x] = 1
 
 
 
-    makeMove(x,y)
+    let possible = makeMove(x,y)
+
+    console.log("possible",possible)
 
     // console.log("checkCount",checkCount)
 
@@ -325,17 +332,20 @@ function addPiece(x,y){
         gameEnd()
     }
     */
-    ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
-    if(ammountPossibleMoves.length == 0){
-        gameEnd()
-    }
 
-    drawGrid(possibleMoves)
+    if(possible){
+        ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
+        if(ammountPossibleMoves.length == 0){
+            gameEnd()
+        }
 
-    if(gameMode == 0){
-        console.log("comp move")
-        compMove()
-        // checkPossibleMoves(board,currentPlayer)
+        drawGridC(possibleMoves)
+
+        if(gameMode == 0){
+            console.log("comp move")
+            compMove()
+            // checkPossibleMoves(board,currentPlayer)
+        }
     }
     /*
     if(lineAfterMove(x,y, currentPlayer)){
@@ -352,6 +362,24 @@ function addPiece(x,y){
     }
     */
 
+    }
+    showPlayer()
+}
+
+function showPlayer(){
+    if(currentPlayer == 1){
+        playerIndicator.innerHTML = "Black"
+    }else{
+        playerIndicator.innerHTML = "White"
+    }
+}
+showPlayer()
+
+function drawGridC(){ //Draw grid depending on user option
+    if(showPossibleMoves){
+        drawGrid(possibleMoves)
+    }else{
+        drawGrid(board)
     }
 }
 
@@ -386,6 +414,7 @@ function makeMove(x,y){
     if(possible){
         currentPlayer = nextPlayer(currentPlayer,2)
     }
+    return possible
 }
 
 function random(max){
@@ -430,13 +459,20 @@ async function compMove(){
         makeMove(possibleCompMoves[choice][0],possibleCompMoves[choice][1])
     
         // currentPlayer = nextPlayer(currentPlayer,2)
-    
-        checkPossibleMoves(board,currentPlayer)
-        drawGrid(possibleMoves)
+        ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
+        drawGridC(possibleMoves)
     }
     computerMoving = false
+    showPlayer()
 }
 
+let possibleMovesCheck = document.getElementById("possibleMoves");
+let showPossibleMoves = false;
+possibleMovesCheck.oninput = function(){
+    showPossibleMoves = this.checked
+    console.log(showPossibleMoves)
+    drawGridC()
+}
 
 printBoard(board)
 
@@ -452,20 +488,20 @@ var canvas = document.getElementsByTagName('canvas')[0];
 canvas.width = canvas.height = 600;
 var ctx = canvas.getContext('2d');
 var black = new Image;
-black.onload = function(){ drawGrid(possibleMoves) };
+black.onload = function(){ drawGridC(possibleMoves) };
 black.src='./Black.svg';
 
 var white = new Image;
-white.onload = function(){ drawGrid(possibleMoves) };
+white.onload = function(){ drawGridC(possibleMoves) };
 white.src='./White.svg';
 
 var blackT = new Image;
-blackT.onload = function(){ drawGrid(possibleMoves) };
-blackT.src='./BlackT.svg';
+blackT.onload = function(){ drawGridC(possibleMoves) };
+blackT.src='./Tick.svg';
 
 var whiteT = new Image;
 whiteT.onload = function(){ drawGrid(possibleMoves) };
-whiteT.src='./WhiteT.svg';
+whiteT.src='./TickW.svg';
 
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
@@ -651,5 +687,5 @@ function resizeCanvas() {
     }
     canvas.width = windowSize;
     canvas.height = windowSize;
-    drawGrid(possibleMoves)
+    drawGridC(possibleMoves)
 }
