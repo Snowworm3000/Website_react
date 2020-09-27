@@ -1,3 +1,41 @@
 p{
-    color: gray;
+    color: white;
+}
+
+body{
+    background-color: rgb(29, 29, 29);
+}
+
+.mainGame{
+    /* border: white solid; */
+}
+.mainGame div{
+    margin: auto;
+    text-align: center;
+    color: white;
+}
+
+h1{
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+
+canvas{
+    padding: 0;
+    margin: auto;
+    display: block;
+    border: black solid 5px;
+    border-radius: 5px;
+}
+
+.gameControlls{
+    max-width: 50%;
+    margin: auto;
+    border: dotted white;
+    background-color: #008B61;
+}
+
+.gameControlls > *{
+    
 }

@@ -455,7 +455,17 @@ async function compMove(){
         gameEnd()
     }else{
         let choice = Math.round(random(possibleCompMoves.length-1))
-        console.log(choice,possibleCompMoves.length-1)
+        // for(i,index in possibleCompMoves)
+        possibleCompMoves.forEach((i,index)=>{
+            i=i.toString()
+            if(i == "0,0"||i=="0,7"||i == "7,0"||i=="7,7"){
+                choice = index
+                console.log("chosen")
+            }else{
+                console.log("no",i,index,i==[0,0])
+            }
+        })
+        console.log(choice)
         makeMove(possibleCompMoves[choice][0],possibleCompMoves[choice][1])
     
         // currentPlayer = nextPlayer(currentPlayer,2)

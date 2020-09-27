@@ -8,14 +8,19 @@
     <script defer src="script.js"></script>
 </head>
 <body>
-    <p>Othello</p>
-    <p>Player is <span id="player"></span></p>
-    <canvas id="canvas"></canvas>
-    <input type="button" id="buttonMode" value="Two player">
-    <input type="range" value="0.5" id="compDelay" min="0" max="100">
-    <p>Delay of computer move: <span id="sliderOutput"></span>s</p>
-    <label>Show possible moves</label>
-    <input type="checkbox" id="possibleMoves">
+    <h1>Othello</h1>
+    <div class="mainGame">
+        <div>Player is <span id="player"></span></div>
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="gameControlls">
+        <input type="button" id="buttonMode" value="Two player">
+        <div>Delay of computer move: <span id="sliderOutput"></span>s
+            <input type="range" value="0.5" id="compDelay" min="0" max="100">
+        </div>
+        <label>Show possible moves</label>
+        <input type="checkbox" id="possibleMoves">
+    </div>
 
     
 </body>
