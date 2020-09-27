@@ -62,11 +62,15 @@ function checkPossibleMoves(board,currentPlayer,comp){
                             //boardCopy[difY+y][difX+x] = "p" + currentPlayer
                             // console.log("shenennnnnnnnnnnn",lineAfterMove(difX+x,difY+y, currentPlayer))
                             if(lineAfterMove(difX+x,difY+y, currentPlayer)){
+                                /*
                                 if(comp){
                                     computerMoves.push([difX+x,difY+y])
                                 }else{
                                     possibleMoves[difY+y][difX+x] = "p"+currentPlayer
                                 }
+                                */
+                               computerMoves.push([difX+x,difY+y])
+                               possibleMoves[difY+y][difX+x] = "p"+currentPlayer
                             }
                         }
                         }
@@ -78,10 +82,13 @@ function checkPossibleMoves(board,currentPlayer,comp){
     //printBoard(boardCopy)
     //console.log("break")
     //printBoard(board)
+    /*
     if(comp){
         return computerMoves;
     }
     return false
+    */
+   return computerMoves;
     // return countPossible > 0
 }
 
@@ -288,14 +295,16 @@ function sleep(ms) {
 }
 
 let currentPlayer = 1
+let ammountPossibleMoves = []
 checkPossibleMoves(board,currentPlayer)
-async function addPiece(x,y){
+function addPiece(x,y){
     //x= prompt("x")
     //y= prompt("y")
 
     // x = parseInt(x) - 1
     // y = parseInt(y) - 1
 
+    if(computerMoving == false){
     
     boardCopy = board.slice()
 
@@ -310,15 +319,23 @@ async function addPiece(x,y){
     makeMove(x,y)
 
     // console.log("checkCount",checkCount)
-    checkPossibleMoves(board,currentPlayer)
-    drawGrid(possibleMoves)
 
-    await sleep(1000)
+    /*
+    if(checkPossibleMoves(board,currentPlayer,true).length == 0){
+        gameEnd()
+    }
+    */
+    ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
+    if(ammountPossibleMoves.length == 0){
+        gameEnd()
+    }
+
+    drawGrid(possibleMoves)
 
     if(gameMode == 0){
         console.log("comp move")
         compMove()
-        checkPossibleMoves(board,currentPlayer)
+        // checkPossibleMoves(board,currentPlayer)
     }
     /*
     if(lineAfterMove(x,y, currentPlayer)){
@@ -334,8 +351,11 @@ async function addPiece(x,y){
         printBoard(board)
     }
     */
+
+    }
 }
 
+let computerMoving = false
 function makeMove(x,y){
     let checking = false
     let lastLine = 0
@@ -372,18 +392,39 @@ function random(max){
     return Math.random()*max
 }
 
-function compMove(){
-    let possibleCompMoves = checkPossibleMoves(board,currentPlayer,true)
-    let choice = Math.round(random(possibleMoves.length))
+function gameEnd(){
+    let count = {white:0,black:0}
+    for(let row = 0; row<8;row++){
+        for(let col=0; col<8;col++){
+            if(board[row][col] == 1){
+                count.black++
+            }else if(board[row][col] == 2){
+                count.white++
+            }
+        }
+    }
+    return count
+}
+
+async function compMove(){
+    computerMoving = true;
+    await sleep(1000)
+    let possibleCompMoves = ammountPossibleMoves
+    console.log(possibleCompMoves)
     if(possibleCompMoves.length == 0){
         console.log("No moves available")
+        gameEnd()
+    }else{
+        let choice = Math.round(random(possibleCompMoves.length-1))
+        console.log(choice,possibleCompMoves.length-1)
+        makeMove(possibleCompMoves[choice][0],possibleCompMoves[choice][1])
+    
+        // currentPlayer = nextPlayer(currentPlayer,2)
+    
+        checkPossibleMoves(board,currentPlayer)
+        drawGrid(possibleMoves)
     }
-    makeMove(possibleCompMoves[choice][0],possibleCompMoves[choice][1])
-
-    // currentPlayer = nextPlayer(currentPlayer,2)
-
-    checkPossibleMoves(board,currentPlayer)
-    drawGrid(possibleMoves)
+    computerMoving = false
 }
 
 
