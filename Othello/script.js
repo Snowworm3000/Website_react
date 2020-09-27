@@ -406,9 +406,19 @@ function gameEnd(){
     return count
 }
 
+let compSlider = document.getElementById("compDelay")
+let sliderOutput = document.getElementById("sliderOutput")
+let compDelay = compSlider.value/0.025
+sliderOutput.innerHTML = compDelay * 0.001
+
+compSlider.oninput = function(){
+    compDelay = this.value /0.025
+    sliderOutput.innerHTML = compDelay * 0.001
+}
+
 async function compMove(){
     computerMoving = true;
-    await sleep(1000)
+    await sleep(compDelay)
     let possibleCompMoves = ammountPossibleMoves
     console.log(possibleCompMoves)
     if(possibleCompMoves.length == 0){
