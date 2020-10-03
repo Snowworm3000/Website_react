@@ -87,3 +87,124 @@ canvas {
   margin-left: auto;
   margin-right: auto;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header{
+  overflow: hidden;
+  background-color: #424242;
+  padding: 20px 10px;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr);
+} 
+header > * {
+  flex: 1;
+  color: white;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px; 
+  line-height: 25px;
+}
+.centerDiv{
+  grid-column-start: 2;
+  grid-column-end: 3;
+  text-align: center;
+  border-style: solid;
+  border-radius: 4px;
+}
+
+.topRight{
+  margin: auto 0;
+  text-align: right;
+}
+
+.navMenu:hover{
+  color: black;
+  background-color: white;
+}
+
+.navMenu{
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  background-color: rgba(0, 0,0, 0);
+  font-size: 30px;
+  color: white;
+}
+
+.sidebar{
+  transition: 0.4s;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  overflow: auto;
+  background-color: #fffffff5 !important;
+  color: black;
+  box-shadow: #000 0 0 10px;
+  border-right: 1px solid #ccc;
+}
+
+.w3-bar-block .w3-bar-item{
+  width: 100%;
+  display: block;
+  padding: 8px 16px;
+  text-align: left;
+  border: none;
+  white-space: normal;
+  float: none;
+  outline: 0;
+  background-color: #0000;
+}
+
+.w3-btn, .w3-button{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.w3-btn, .w3-button {
+  border: none;
+  display: inline-block;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: #424242;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.w3-button:hover {
+  color: #000 !important;
+  background-color: #ccc !important;
+}
+
+.sidebar p{
+  color: black;
+  cursor: default;
+}
+
+.closebtn{
+  text-align: right;
+}

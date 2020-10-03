@@ -6,20 +6,65 @@
     <title>Othello</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
+    <script>
+        function closeNav(){
+            document.getElementById("sidebar").style.width = "0";
+        }
+
+        function openNav(){
+            document.getElementById("sidebar").style.width = "200px";
+        }
+
+        function openSetting(){
+            document.getElementById("gameControlls").style.transform = "translate(0,0)";
+        }
+
+        function closeSetting(){
+            document.getElementById("gameControlls").style.transform = "translate(-200vw,0)";
+        }
+    </script>
 </head>
 <body>
-    <h1>Othello</h1>
-    <div class="mainGame">
-        <div>Player is <span id="player"></span></div>
-        <canvas id="canvas"></canvas>
-    </div>
-    <div class="gameControlls">
-        <input type="button" id="buttonMode" value="Two player">
-        <div>Delay of computer move: <span id="sliderOutput"></span>s
-            <input type="range" value="0.5" id="compDelay" min="0" max="100">
+
+    <header>
+        <img id="cog" src="cog.svg" onclick="openSetting()">
+        <div class="centerDiv">Ethan's coding website</div>
+        <div class="topRight">
+        <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
         </div>
-        <label>Show possible moves</label>
-        <input type="checkbox" id="possibleMoves">
+
+    </header>
+    <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+        <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+        <a class="w3-bar-item w3-button" href="/index.html">Home</a>
+        <p class="w3-bar-item">Games:</p>
+        <a class="w3-bar-item w3-button" href="/Noughts and crosses/index.html">Noughts and crosses</a>
+        <a class="w3-bar-item w3-button" href="/Quiz/index.html">Quiz</a>
+        <a class="w3-bar-item w3-button" href="/Connect4/index.html">Connect four</a>
+        <a class="w3-bar-item w3-button" href="/Othello/index.html">Othello</a>
+        <p class="w3-bar-item">Experiments</p>
+        <a class="w3-bar-item w3-button" href="/Experiments/RandomBackground/index.html">Random background</a>
+        <a class="w3-bar-item w3-button" href="/Experiments/SimonSays/index.html">Simon says</a>
+        
+    </div>
+
+
+
+    <h1>Othello</h1>
+    <div class="grid">
+        <div id="gameControlls" class="gameControlls">
+            <div onclick="closeSetting()">Close</div>
+            <input type="button" id="buttonMode" value="Two player">
+            <div>Delay of computer move: <span id="sliderOutput"></span>s
+                <input type="range" value="0.5" id="compDelay" min="0" max="100">
+            </div>
+            <label>Show possible moves</label>
+            <input type="checkbox" id="possibleMoves">
+        </div>
+        <div class="mainGame">
+            <div>Player is <span id="player"></span></div>
+            <canvas id="canvas"></canvas>
+        </div>
     </div>
 
     

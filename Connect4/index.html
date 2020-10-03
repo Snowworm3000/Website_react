@@ -7,8 +7,40 @@
     <script defer src="https://vast-crag-16763.herokuapp.com/socket.io/socket.io.js"></script>
     <script defer src="./script.js"></script>
     <link rel="stylesheet" href="./style.css">
+    <script>
+        function closeNav(){
+            document.getElementById("sidebar").style.width = "0";
+        }
+
+        function openNav(){
+            document.getElementById("sidebar").style.width = "200px";
+        }
+    </script>
 </head>
 <body>
+    <header>
+        <div class="centerDiv">Ethan's coding website</div>
+        <div class="topRight">
+        <button class="navMenu" onclick="openNav()">☰</button>
+        </div>
+
+    </header>
+    <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+        <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+        <a class="w3-bar-item w3-button" href="/index.html">Home</a>
+        <p class="w3-bar-item">Games:</p>
+        <a class="w3-bar-item w3-button" href="/Noughts and crosses/index.html">Noughts and crosses</a>
+        <a class="w3-bar-item w3-button" href="/Quiz/index.html">Quiz</a>
+        <a class="w3-bar-item w3-button" href="/Connect4/index.html">Connect four</a>
+        <a class="w3-bar-item w3-button" href="/Othello/index.html">Othello</a>
+        <p class="w3-bar-item">Experiments</p>
+        <a class="w3-bar-item w3-button" href="/Experiments/RandomBackground/index.html">Random background</a>
+        <a class="w3-bar-item w3-button" href="/Experiments/SimonSays/index.html">Simon says</a>
+        
+    </div>
+
+
+
     <div class="container">
         <canvas id="game"></canvas>
         <div id="msg" class="message fade">Message</div>

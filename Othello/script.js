@@ -510,7 +510,7 @@ blackT.onload = function(){ drawGridC(possibleMoves) };
 blackT.src='./Tick.svg';
 
 var whiteT = new Image;
-whiteT.onload = function(){ drawGrid(possibleMoves) };
+whiteT.onload = function(){ drawGridC(possibleMoves) };
 whiteT.src='./TickW.svg';
 
 canvas.addEventListener('mousedown', function(e) {

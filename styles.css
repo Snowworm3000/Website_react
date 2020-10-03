@@ -64,6 +64,9 @@ header > * {
     line-height: 25px;
 }
 
+
+
+
 .sidebar{
     transition: 0.4s;
     right: 0;
@@ -75,15 +78,61 @@ header > * {
     background-color: #fffffff5 !important;
     color: black;
     box-shadow: #000 0 0 10px;
+    border-right: 1px solid #ccc;
+}
+
+.w3-bar-block .w3-bar-item{
+    width: 100%;
+    display: block;
+    padding: 8px 16px;
+    text-align: left;
+    border: none;
+    white-space: normal;
+    float: none;
+    outline: 0;
+    background-color: #0000;
+}
+
+.w3-btn, .w3-button{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.w3-btn, .w3-button {
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: #424242;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.w3-button:hover {
+    color: #000 !important;
+    background-color: #ccc !important;
 }
 
 .sidebar p{
     color: black;
+    cursor: default;
 }
 
 .closebtn{
     text-align: right;
 }
+
+
+
+
 
 
 .footer{

@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <script>
         function closeNav(){
             document.getElementById("sidebar").style.width = "0";
         }
 
         function openNav(){
-            document.getElementById("sidebar").style.width = "250px";
+            document.getElementById("sidebar").style.width = "200px";
         }
     </script>
 </head>
@@ -27,6 +27,7 @@
 
     <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
         <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+        <a class="w3-bar-item w3-button" href="/index.html">Home</a>
         <p class="w3-bar-item">Games:</p>
         <a class="w3-bar-item w3-button" href="./Noughts and crosses/index.html">Noughts and crosses</a>
         <a class="w3-bar-item w3-button" href="./Quiz/index.html">Quiz</a>
