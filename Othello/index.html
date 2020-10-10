@@ -9,6 +9,12 @@
     <script defer src="https://othelloethan.herokuapp.com/socket.io/socket.io.js"></script>
     <script defer src="script.js"></script>
     <script>
+        document.addEventListener('touchmove', function(event) {
+    event = event.originalEvent || event;
+    if(event.scale > 1) {
+      event.preventDefault();
+    }
+  }, false);
         function closeNav(){
             document.getElementById("sidebar").style.width = "0";
         }
