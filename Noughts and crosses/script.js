@@ -1,5 +1,4 @@
 document.getElementById("gridSize").value = "";
-const ammountPlayersLabel = document.getElementById("ammountPlayersLabel");
 const button1 = document.getElementById("1");
 const button2 = document.getElementById("2");
 const winInfo = document.getElementById("winInfo");
@@ -162,13 +161,11 @@ function getPlayers(value){
     ammount = value
     if(value == 1){
         players = ["X"];
-        ammountPlayersLabel.innerHTML = "One player mode"
         button1.disabled = true
         button2.disabled = false
         resetBoard()
     }else{
         players = ["X","O"];
-        ammountPlayersLabel.innerHTML = "Two player mode"
         button1.disabled = false
         button2.disabled = true
         resetBoard()

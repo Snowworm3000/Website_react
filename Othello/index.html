@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Othello</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="https://othelloethan.herokuapp.com/socket.io/socket.io.js"></script>
     <script defer src="script.js"></script>
     <script>
         function closeNav(){
@@ -60,10 +61,14 @@
             </div>
             <label>Show possible moves</label>
             <input type="checkbox" id="possibleMoves">
+            <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
+            <div id="message-container"></div>
+            <div class="playerList" id="div"></div>
         </div>
         <div class="mainGame">
             <div>Player is <span id="player"></span></div>
             <canvas id="canvas"></canvas>
+            <div id="msg" class="message fade">Message</div>
         </div>
     </div>
 

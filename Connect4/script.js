@@ -6,7 +6,7 @@ const messageContainer = document.getElementById("message-container")
 let yourTurn = true;
 let username = "";
 
-function sleep(ms) {
+function sleep(ms) { 
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 let waitingForResponse = false;
@@ -16,8 +16,8 @@ function multiplayer(){
     restartGame()
     yourTurn = false;
 
-    socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
-    //socket = io("http://localhost:3000")
+    // socket = io.connect('https://vast-crag-16763.herokuapp.com/') //Connect to node.js server
+    socket = io("http://localhost:3000")
 
     message("Waiting for player")
 

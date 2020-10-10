@@ -1,3 +1,201 @@
+let multiplayerMode = false;
+
+
+let socket;
+const messageContainer = document.getElementById("message-container")
+let yourTurn = true;
+let username = "";
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+let waitingForResponse = false;
+let canRestart = true;
+function multiplayer(){
+
+    restartGame()
+    yourTurn = false;
+
+    socket = io.connect('https://othelloethan.herokuapp.com/') //Connect to node.js server
+    // socket = io("http://localhost:3000")
+
+    message("Waiting for player")
+
+    playerMode = 2
+    multiplayerMode = true;
+
+    //const name = prompt("What is your name?")
+    socket.emit('new-user', name)
+    //appendMessage(name)
+
+    socket.on("roomSet", room =>{
+        console.log("room", room)
+    })
+
+    socket.on("name", name=>{
+        console.log("name",name)
+    })
+
+    let playerNo = 0
+    socket.on("playerNo", player=>{
+        playerNo = player
+        console.log(playerNo)
+    })
+
+    socket.on("userLeft", function(val){
+        if(waitingForResponse){
+            message("Waiting for response")
+        } else if(canRestart == false){
+            console.log("wont restart boiiiiiiiiiiiiiiiiii")
+        }else{
+            message("user disconnected")
+            //await sleep(1000)
+
+            restartGame()
+            yourTurn = false;
+            playerMode = 2
+            multiplayerMode = true;
+            console.log("reconnecting")
+            //socket.emit('reconnect', "i")
+
+            socket.emit('restart', "oiwheorihiohr");
+        }
+    })
+
+    socket.on("startGame", val =>{
+        console.log("start game", val)
+        yourTurn = true;
+        message("Game has started, your turn")
+        restartGame();
+    })
+
+    socket.on("move", move=>{
+        if(playing==false){
+            restartGame()
+        }
+
+        console.log("player move")
+        yourTurn = true;
+        /*
+        if(playerNo == move.player){
+            yourTurn = false
+        }else{
+            yourTurn = true
+        }
+        */
+        console.log(playerNo, player, "tjo")
+        makeMove(move.x,move.y)
+
+        ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
+        if(ammountPossibleMoves.length == 0){
+            gameEnd()
+        }
+
+        drawGridC(possibleMoves)
+        message("Your turn")
+    })
+
+    username = prompt("Player name \n(leave blank if you do not want to play with friends)")
+    if(username != ""){
+        socket.emit('name',username)
+    }
+
+    socket.on('invalidName', ()=>{
+        console.log("invalid name")
+        username = prompt("Player name \n(leave blank if you do not want to play with friends)")
+        socket.emit('name',username)
+
+    })
+
+    socket.on('promptJoinRoom', roomName=>{
+        console.log("recieved request")
+        let ask = prompt("A user would like to play against you. Join? y/n")
+        if(ask == "y"){
+            socket.emit('joinRoom', roomName);
+            console.log(roomName,"join")
+            canRestart = false;
+        }
+    })
+
+    socket.on('getOnlinePlayers', playersArray =>{
+        printPlayers(playersArray);
+    })
+
+    function printPlayers(players){
+        clearDiv();
+        console.log(players)
+        players.splice(players.indexOf(username),1);
+        appendMessage(players);
+    }
+
+}
+function refreshPlayers(){
+    socket.emit('refreshPlayers')
+}
+
+function clearDiv(){
+    messageElement = document.getElementById("div")
+    messageElement.innerText = ""
+}
+function appendMessage(message) {
+    const messageElement = document.getElementById("div")
+    if(typeof(message) == "object"){
+        for(i in message){
+            messageElement.innerHTML += "<div class='playerElement'>" + message[i] + "<input type='button' value='join game' onclick='joinGame("+'"'+message[i]+'"'+")'></div>" + "<br>"
+        }
+    } else{
+        messageElement.innerHTML += message + "<br>"
+    }
+    messageContainer.append(messageElement)
+}
+
+function joinGame(name){
+    waitingForResponse = true;
+    console.log(name)
+    socket.emit('promptPlayer', name)
+    socket.emit('joinRoom', name)
+}
+
+function selectRoom(room){
+    socket.emit('joinRoom', room);
+    console.log("join")
+}
+
+const messageBox = document.getElementById("msg")
+function message(msg){
+    messageBox.hidden = false
+    messageBox.innerText = msg
+    messageBox.classList.remove("fade");
+}
+let playing = true;
+let playerMode = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let board = []
 createBoard()
 function createBoard(){ //Create array with 8 subarrays containing all 0s representing the board
@@ -300,6 +498,8 @@ let ammountPossibleMoves = []
 let playerIndicator = document.getElementById("player");
 checkPossibleMoves(board,currentPlayer)
 function addPiece(x,y){
+    if(playing){
+        if(playerMode != 2){
     //x= prompt("x")
     //y= prompt("y")
 
@@ -361,6 +561,36 @@ function addPiece(x,y){
         printBoard(board)
     }
     */
+
+    }
+    } else{
+        if(yourTurn == true){
+            boardCopy = board.slice()
+            if(board[y][x] != 0){
+                console.log("returned")
+                return
+            }
+            let possible = makeMove(x,y)
+            console.log("possible",possible)
+            if(possible){
+                if(multiplayerMode){
+                    socket.emit('move',[xSet,ySet]);
+                }
+                ammountPossibleMoves = checkPossibleMoves(board,currentPlayer)
+                if(ammountPossibleMoves.length == 0){
+                    gameEnd()
+                }
+        
+                drawGrid(board)
+                yourTurn = false;
+                console.log("moved")
+                message("Waiting for player to move")
+            }
+        }else{
+            console.log("not your turn")
+        }
+    }
+
 
     }
     showPlayer()
@@ -484,8 +714,6 @@ possibleMovesCheck.oninput = function(){
     drawGridC()
 }
 
-printBoard(board)
-
 /*
 while(1){
     addPiece()
@@ -535,7 +763,6 @@ function getCursorPosition(canvas, event) {
 
     xSet = getLocation(x);
     ySet = getLocation(y);
-
     addPiece(xSet,ySet)
 }
 
