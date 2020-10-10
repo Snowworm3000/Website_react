@@ -164,6 +164,7 @@ function selectRoom(room){
 const messageBox = document.getElementById("msg")
 function message(msg){
     messageBox.hidden = false
+    messageBox.style.display = "block";
     messageBox.innerText = msg
     messageBox.classList.remove("fade");
 }
@@ -224,6 +225,8 @@ function restartGame(){
     createBoard()
     checkPossibleMoves(board,currentPlayer)
     drawGridC(possibleMoves)
+    winDiv.hidden = true;
+    playing = true
 }
 
 const buttonPlayers = document.getElementById("buttonMode");
@@ -651,7 +654,9 @@ function random(max){
     return Math.random()*max
 }
 
+const winDiv = document.getElementById("win");
 function gameEnd(){
+    playing = false;
     let count = {white:0,black:0}
     for(let row = 0; row<8;row++){
         for(let col=0; col<8;col++){
@@ -661,6 +666,21 @@ function gameEnd(){
                 count.white++
             }
         }
+    }
+
+    winDiv.hidden = false
+    if(count.white > count.black){
+        winDiv.style.background = "#fffa"
+        winDiv.style.color = "#000"
+        winDiv.innerHTML = "White wins"
+    }else if(count.white < count.black){
+        winDiv.style.background = "#000a"
+        winDiv.style.color = "#fff"
+        winDiv.innerHTML = "Black wins"
+    }else{
+        winDiv.style.background = "#000a"
+        winDiv.style.color = "#fff"
+        winDiv.innerHTML = "Tie"
     }
     return count
 }
@@ -747,6 +767,10 @@ canvas.addEventListener('mousedown', function(e) {
 let boardS = 8
 
 function getCursorPosition(canvas, event) {
+    if(playing == false){
+        restartGame()
+        return
+    }
     const rect = canvas.getBoundingClientRect()
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top

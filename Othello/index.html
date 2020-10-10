@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
     <title>Othello</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="https://othelloethan.herokuapp.com/socket.io/socket.io.js"></script>
@@ -17,11 +18,11 @@
         }
 
         function openSetting(){
-            document.getElementById("gameControlls").style.transform = "translate(0,0)";
+            document.getElementById("myNav").style.height = "100%";
         }
 
         function closeSetting(){
-            document.getElementById("gameControlls").style.transform = "translate(-200vw,0)";
+            document.getElementById("myNav").style.height = "0%";
         }
     </script>
 </head>
@@ -50,24 +51,39 @@
     </div>
 
 
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSetting()">&times;</a>
+<div class="settings-container">
+        <div>
+            <div>Player Mode</div>
+        <input type="button" id="buttonMode" value="Two player">
+        </div>
+        <div>Delay of computer move: <span id="sliderOutput"></span>
+            <br>
+            <input type="range" value="0.5" id="compDelay" min="0" max="100">
+        </div>
+        <div>Show possible moves</div>
+        <div>
+        <input type="checkbox" id="possibleMoves">
+        <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
+        </div>
+        <div id="message-container"></div>
+        <div class="playerList" id="div"></div>
+        </div>
+    </div>
+
+
 
     <h1>Othello</h1>
     <div class="grid">
-        <div id="gameControlls" class="gameControlls">
-            <div onclick="closeSetting()">Close</div>
-            <input type="button" id="buttonMode" value="Two player">
-            <div>Delay of computer move: <span id="sliderOutput"></span>s
-                <input type="range" value="0.5" id="compDelay" min="0" max="100">
-            </div>
-            <label>Show possible moves</label>
-            <input type="checkbox" id="possibleMoves">
-            <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
-            <div id="message-container"></div>
-            <div class="playerList" id="div"></div>
-        </div>
+
+
         <div class="mainGame">
             <div>Player is <span id="player"></span></div>
             <canvas id="canvas"></canvas>
+            <div hidden="true" id="win" class="centered box">
+                <div>Winner</div>
+            </div>
             <div id="msg" class="message fade">Message</div>
         </div>
     </div>
