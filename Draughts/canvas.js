@@ -69,12 +69,12 @@ function drawGrid(board){
                 locationY = windowSize /boardS * row[i] - windowSize/boardS/2
                 ctx.drawImage(white, locationX-size/2,locationY-size/2,size,size);
             }
-            else if(board[i][j] == "p1"){
+            else if(board[i][j] == "3"){
                 locationX = windowSize /boardS * row[j] - windowSize/boardS/2
                 locationY = windowSize /boardS * row[i] - windowSize/boardS/2
                 ctx.drawImage(blackT, locationX-size/2,locationY-size/2,size,size);
             }
-            else if(board[i][j] == "p2"){
+            else if(board[i][j] == "4"){
                 locationX = windowSize /boardS * row[j] - windowSize/boardS/2
                 locationY = windowSize /boardS * row[i] - windowSize/boardS/2
                 ctx.drawImage(whiteT, locationX-size/2,locationY-size/2,size,size);
