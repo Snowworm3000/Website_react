@@ -30,17 +30,21 @@ let selected = false
 let moveSelected
 let selectedPiece
 
+let currentPlayer = 1
 function input(x,y){
-    if(board[y][x] != 0){ // check if selected is a piece
-        selectedPiece = {x:x,y:y}
-        selected = true
-        console.log("piece selected")
-    }else if(selected){ // move selected piece
-        movePiece(selectedPiece,{x:x,y:y})
-        console.log("piece moved",board[y][x])
+    let selectedColour = board[y][x]
+    if(selectedColour == currentPlayer || selectedColour == 0){
+        if(board[y][x] != 0){ // check if selected is a piece
+            selectedPiece = {x:x,y:y}
+            selected = true
+            console.log("piece selected")
+        }else if(selected){ // move selected piece
+            movePiece(selectedPiece,{x:x,y:y})
+            selected = false
+            console.log("piece moved",board[y][x])
+        }
+        drawGridC()
     }
-    drawGridC()
-
 }
 
 
@@ -151,6 +155,7 @@ function movePiece(locationFrom,locationTo){
         }else{
             board[locationTo.y][locationTo.x] = counter
         }
+        currentPlayer = (currentPlayer%2)+1
     }
 }
 
