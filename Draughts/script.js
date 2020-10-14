@@ -25,15 +25,24 @@ function printBoard(board){ //Prints the board to console for debuging
     }
 }
 
+function getPossiblePieces(currentPiece){
+    if(currentPlayer == 1){
+        return [1,3]
+    }else{
+        return [2,4]
+    }
+}
+
 
 let selected = false
 let moveSelected
 let selectedPiece
 
-let currentPlayer = 1
+let currentPlayer = 2
 function input(x,y){
     let selectedColour = board[y][x]
-    if(selectedColour == currentPlayer || selectedColour == 0){
+    let currentPossiblePiece = getPossiblePieces(currentPlayer)
+    if(currentPossiblePiece.includes(selectedColour) || selectedColour == 0){
         if(board[y][x] != 0){ // check if selected is a piece
             selectedPiece = {x:x,y:y}
             selected = true
@@ -101,7 +110,7 @@ function isValidMove(locationFrom,locationTo){
         if(checkInRange(locationFrom,locationTo,1)){ // if location is in range of 1, so a normal non capture jump
             if(board[locationTo.y][locationTo.x] == 0){
                 if(locationFrom.x != locationTo.x){
-                    return true
+                    return 1
                 }
             }
         }else if(checkInRange(locationFrom,locationTo,2)){ // if location is in range of 2, so a capture move
@@ -112,10 +121,10 @@ function isValidMove(locationFrom,locationTo){
                     console.log(middle,board[middle[1]][middle[0]]," middle")
                     let middlePiece = board[middle[1]][middle[0]]
                     let currentPiece = board[locationFrom.y][locationFrom.x]
-                    if(isOppositePiece(currentPiece,middlePiece)){ // check if the middle piece is the opposite piece to the current piece
+                    if(isOppositePiece(currentPiece,middlePiece)&&middlePiece!=0){ // check if the middle piece is the opposite piece to the current piece
                         console.log("possible capture")
                         board[middle[1]][middle[0]] = 0; // capture piece
-                        return true
+                        return 2
                     }
                     console.log("impossible capture",currentPiece,[2,1][currentPiece-1],middlePiece)
                 }
@@ -155,7 +164,9 @@ function movePiece(locationFrom,locationTo){
         }else{
             board[locationTo.y][locationTo.x] = counter
         }
-        currentPlayer = (currentPlayer%2)+1
+        if(validMove == 1){ // change player if the move was not a capture
+            currentPlayer = (currentPlayer%2)+1
+        }
     }
 }
 
