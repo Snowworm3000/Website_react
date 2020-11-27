@@ -10,9 +10,12 @@ img {
     text-align: center;
     color: white;
     text-shadow: 2px 2px 5px black;
+    font-size: 3vw;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 html{
     background: url("https://source.unsplash.com/1600x900/?nature") no-repeat center center fixed;
     background-size: cover; 
+    overflow: hidden;
 }

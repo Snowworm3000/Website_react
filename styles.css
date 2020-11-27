@@ -9,8 +9,9 @@ body{
 
 header{
     overflow: hidden;
-    background-color: rgba(23, 125, 255, 0.7);
-    padding: 20px 10px;
+    /* background-color: rgba(23, 125, 255, 0.7); */
+    background-image: linear-gradient(180deg,rgb(0, 153, 255),rgb(39, 115, 202)95%);
+    /* padding: 20px 10px; */
     display: grid !important;
     grid-template-columns: repeat(3, 1fr);
 } 
@@ -19,8 +20,10 @@ header{
     grid-column-start: 2;
     grid-column-end: 3;
     text-align: center;
-    border-style: solid;
-    border-radius: 4px;
+    padding: 0;
+}
+.centerDiv img{
+    width:10vh;
 }
 
 .topRight{
@@ -177,7 +180,8 @@ p{
     border-width: 2px;
     border-radius: 10px;
     border-color: grey;
-    background-color: #3165e1;
+    /* background-color: #3165e1; */
+    background-image: linear-gradient(180deg,rgb(99, 141, 204), rgb(28, 70, 185) 95%);
     box-shadow: 1px 1px 10px #424242;
     margin: 5px;
     transition: box-shadow 0.2s;
