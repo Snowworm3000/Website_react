@@ -10,17 +10,41 @@
     <link rel='icon' href="../QuestionFavicon2.png">
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <meta name="google-signin-client_id" content="964614107255-nvqs4nibdt8t4otm19r7a22qqdbn4ihl.apps.googleusercontent.com">
+    <script>
+      function closeNav(){
+          document.getElementById("sidebar").style.width = "0";
+      }
+
+      function openNav(){
+          document.getElementById("sidebar").style.width = "200px";
+      }
+  </script>
 </head>
 <body>
-  <div class="header">
-    <a href="javascript:anchor('home')">Home</a>
-    <div class="header-right">
-      <a href="javascript:anchor('quiz')">Quiz</a> 
-      <a href="javascript:anchor('quizM')">Quiz maker</a>
-      <a id="login" href="javascript:anchor('login')">Login</a>
-      <a class="active" id="signUp" href="javascript:anchor('signUp')">Sign up</a>
-      </div>
+  <header>
+    <div class="topLeft">
+    <a class="active home" href="/index.html">Home</a>
     </div>
+    <div class="centerDiv">
+        <img 
+        style="filter:invert(); width:10vw;"
+         src="/Code.svg">
+    </div>
+    <div class="topRight">
+    <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
+    </div>
+
+</header>
+
+<div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+    <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+    <a class="w3-bar-item w3-button" href="/index.html">Home</a>
+    <a class="w3-bar-item w3-button" href="javascript:anchor('quiz')">Quiz</a> 
+    <a class="w3-bar-item w3-button" href="javascript:anchor('quizM')">Quiz maker</a>
+    <a class="w3-bar-item w3-button" id="login" href="javascript:anchor('login')">Login</a>
+    <a class="w3-bar-item w3-button" id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+   
+</div>
 
     <div class="container">
         <div id="question-container">

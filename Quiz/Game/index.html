@@ -9,17 +9,41 @@
     <title>Quiz</title>
     <meta name="viewport" content="width=device-width" />
     <link rel='icon' href="../QuestionFavicon2.png">
+    <script>
+      function closeNav(){
+          document.getElementById("sidebar").style.width = "0";
+      }
+
+      function openNav(){
+          document.getElementById("sidebar").style.width = "200px";
+      }
+  </script>
 </head>
 <body>
-  <div class="header">
-    <a href="javascript:anchor('home')">Home</a>
-    <div class="header-right">
-      <a class="active" href="javascript:anchor('quiz')">Quiz</a> 
-      <a href="javascript:anchor('quizM')">Quiz maker</a>
-      <a id="login" href="javascript:anchor('login')">Login</a>
-      <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
-      </div>
+  <header>
+    <div class="topLeft">
+    <a class="active home" href="/index.html">Home</a>
     </div>
+    <div class="centerDiv">
+        <img 
+        style="filter:invert(); width:10vw;"
+         src="/Code.svg">
+    </div>
+    <div class="topRight">
+    <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
+    </div>
+
+</header>
+
+<div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+    <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+    <a class="w3-bar-item w3-button" href="/index.html">Home</a>
+    <a class="w3-bar-item w3-button" href="javascript:anchor('quiz')">Quiz</a> 
+    <a class="w3-bar-item w3-button" href="javascript:anchor('quizM')">Quiz maker</a>
+    <a class="w3-bar-item w3-button" id="login" href="javascript:anchor('login')">Login</a>
+    <a class="w3-bar-item w3-button" id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+   
+</div>
   
     <div class="top" id="topStart">Ethan's Quiz!</div>
     <div id="signedIn"></div>

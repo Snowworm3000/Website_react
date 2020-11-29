@@ -6,42 +6,24 @@
         <title>Home</title>
         <link rel="stylesheet" type="text/css" href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"colors":{"popup":{"background":"#222222","text":"#ffffff","border":"#b5e1a0"},"button":{"background":"#b5e1a0","text":"#000000"}},"position":"bottom-right","border":"normal","corners":"large","padding":"small","transparency":"15","fontsize":"large","content":{"href":"https://www.websitepolicies.com/policies/view/mg1ohPdp"}})});</script>
     </head>
-    <script>
-      function closeNav(){
-          document.getElementById("sidebar").style.width = "0";
-      }
-
-      function openNav(){
-          document.getElementById("sidebar").style.width = "200px";
-      }
-  </script>
+    <style>
+        img[src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png"]{
+display:none;
+}
+    </style>
 <body>
 
-  <header>
-    <div class="topLeft">
-    <a class="active home" href="/index.html">Home</a>
-    </div>
-    <div class="centerDiv">
-        <img 
-        style="filter:invert(); width:10vw;"
-         src="/Code.svg">
-    </div>
-    <div class="topRight">
-    <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
+  <div class="header">
+    <a class="active" href="javascript:anchor('home')">Home</a>
+    <div class="header-right">
+      <a href="javascript:anchor('quiz')">Quiz</a> 
+      <a href="javascript:anchor('quizM')">Quiz maker</a>
+      <a id="login" href="javascript:anchor('login')">Login</a>
+      <a id="signUp" href="javascript:anchor('signUp')">Sign up</a>
+      </div>
     </div>
 
-</header>
-
-<div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
-    <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
-    <a class="w3-bar-item w3-button" href="/index.html">Home</a>
-    <a class="w3-bar-item w3-button" href="javascript:anchor('quiz')">Quiz</a> 
-    <a class="w3-bar-item w3-button" href="javascript:anchor('quizM')">Quiz maker</a>
-    <a class="w3-bar-item w3-button" id="login" href="javascript:anchor('login')">Login</a>
-    <a class="w3-bar-item w3-button" id="signUp" href="javascript:anchor('signUp')">Sign up</a>
-   
-</div>
-  
+      
     <div class="container">
         <div id="question-container" >
             <h1>Welcome to the home of Ethan's quiz website. You can choose any of the options above.</h1>
