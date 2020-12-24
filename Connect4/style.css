@@ -71,6 +71,97 @@ body{
 
 
 
+header{
+    overflow: hidden;
+    /* background-color: rgba(23, 125, 255, 0.7); */
+    background-color: rgba(34, 34, 34, 0.7);
+    /* padding: 20px 10px; */
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+  } 
+  
+  .topRight{
+    margin: auto 0;
+    text-align: right;
+  }
+  
+  .topLeft{
+    margin: auto 0;
+    text-align: left;
+  }
+  
+  .navMenu{
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: rgba(0, 0,0, 0);
+    font-size: 30px;
+    color: white;
+  }
+  
+  .topRight img{
+    padding: 0;
+    text-align: center;
+  
+    width: 40px;
+    
+  }
+  
+  img {
+    padding: 4%;
+    width: 200px;
+  }
+  
+  header > * {
+    flex: 1;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px; 
+    line-height: 25px;
+  }
+  
+  .navMenu{
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 30px;
+    color: white;
+    transition: 500ms;
+    filter: invert();
+  }
+  .navMenu img{
+    width: 40px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .navMenu:hover{
+    transform: rotate(90deg);
+    /* filter: none; */
+  }
+  
+  .home{
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    margin-left: 0.2em;
+    text-decoration: none;
+    font-size: 18px; 
+    line-height: 25px;
+    border-radius: 4px;
+  }
+  
+  .home:hover{
+    background-color: #ddd;
+    color: black;
+  }
+
+
+
+
 
 
 body {
@@ -96,18 +187,15 @@ header > * {
     grid-column-start: 2;
     grid-column-end: 3;
     text-align: center;
-    border-style: solid;
-    border-radius: 4px;
-}
+    padding: 0;
+  }
+  .centerDiv img{
+    width:10vh;
+  }
 
 .topRight{
     margin: auto 0;
     text-align: right;
-}
-
-.navMenu:hover{
-    color: black;
-    background-color: white;
 }
 
 .navMenu{
@@ -121,18 +209,19 @@ header > * {
 
 .sidebar{
     transition: 0.4s;
-    right: 0;
+    right: -1px;
     top: 0;
     height: 100%;
     width: 0;
-    position: fixed;
+    position: fixed !important;
     z-index: 1;
-    overflow: auto;
-    background-color: #fffffff5 !important;
-    color: black;
+    overflow: hidden;
+    background-color: rgba(34, 34, 34, 0.9) !important;
+    color: white;
     box-shadow: #000 0 0 10px;
     border-right: 1px solid #ccc;
-}
+    font-size: 20px;
+  }
 
 .w3-bar-block .w3-bar-item{
     width: 100%;
@@ -162,22 +251,22 @@ header > * {
     vertical-align: middle;
     overflow: hidden;
     text-decoration: none;
-    color: #424242;
+    color: rgb(206, 206, 206);
     background-color: inherit;
     text-align: center;
     cursor: pointer;
     white-space: nowrap;
-}
-
-.w3-button:hover {
-    color: #000 !important;
+  }
+  
+  .w3-button:hover {
+    color:#000 !important;
     background-color: #ccc !important;
-}
-
-.sidebar p{
-    color: black;
+  }
+  
+  .sidebar p{
+    color: white;
     cursor: default;
-}
+  }
 
 .closebtn{
     text-align: right;

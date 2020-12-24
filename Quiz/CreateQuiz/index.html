@@ -13,7 +13,7 @@
         }
   
         function openNav(){
-            document.getElementById("sidebar").style.width = "200px";
+            document.getElementById("sidebar").style.width = "300px";
         }
     </script>
 </head>
@@ -355,7 +355,9 @@ function createObject(question,aAnswers,answers){
 function uploadQuiz(){
     console.log("uploading")
     document.getElementById("result").innerHTML = "<p>Your question has been uploaded to the quiz.</p><p>You can make more questions if you want.</p>"
+    console.log(createdObject," first")
     questionsUpload = firebase.database().ref("questions/" + firebase.auth().currentUser.uid);
+    console.log(createdObject)
     questionsUpload.push(createdObject)
     window.location.href = "./Submitted/index.html";
 }

@@ -13,17 +13,24 @@
         }
 
         function openNav(){
-            document.getElementById("sidebar").style.width = "200px";
+            document.getElementById("sidebar").style.width = "300px";
         }
     </script>
 </head>
 <body>
     <header>
-        <div class="centerDiv">Ethan's coding website</div>
-        <div class="topRight">
-        <button class="navMenu" onclick="openNav()">☰</button>
+        <div class="topLeft">
+        <a class="active home" href="/index.html">Home</a>
         </div>
-
+        <div class="centerDiv">
+            <img 
+            style="filter:invert(); width:10vw;"
+             src="/Code.svg">
+        </div>
+        <div class="topRight">
+        <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
+        </div>
+    
     </header>
     <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
         <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
