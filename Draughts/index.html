@@ -7,8 +7,96 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="canvas.js"></script>
     <script defer src="script.js"></script>
+    <script>
+        document.addEventListener('touchmove', function(event) {
+    event = event.originalEvent || event;
+    if(event.scale > 1) {
+      event.preventDefault();
+    }
+  }, false);
+        function closeNav(){
+            document.getElementById("sidebar").style.width = "0";
+        }
+
+        function openNav(){
+            document.getElementById("sidebar").style.width = "300px";
+        }
+
+        function openSetting(){
+            document.getElementById("myNav").style.height = "100%";
+        }
+
+        function closeSetting(){
+            document.getElementById("myNav").style.height = "0%";
+        }
+    </script>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
+    
+    <header>
+        <div class="topLeft">
+        <a class="active home" href="/index.html">Home</a>
+        </div>
+        <div class="centerDiv">
+            <img 
+            style="filter:invert(); width:10vw;"
+             src="/Code.svg">
+        </div>
+        <div class="topRight">
+        <button class="navMenu" onclick="openNav()"><img src="/bar.svg"></button>
+        </div>
+    
+    </header>
+    <div id="sidebar" class="sidebar w3-sidebar w3-bar-block w3-border-right">
+        <p href="javascript:void(0)" class="w3-bar-item w3-button closebtn" onclick="closeNav()">Close x</p>
+        <a class="w3-bar-item w3-button" href="/index.html">Home</a>
+        <p class="w3-bar-item">Games:</p>
+        <a class="w3-bar-item w3-button" href="/Noughts and crosses/index.html">Noughts and crosses</a>
+        <a class="w3-bar-item w3-button" href="/Quiz/Game/index.html">Quiz</a>
+        <a class="w3-bar-item w3-button" href="/Connect4/index.html">Connect four</a>
+        <a class="w3-bar-item w3-button" href="/Othello/index.html">Othello</a>
+        <p class="w3-bar-item">Experiments</p>
+        <a class="w3-bar-item w3-button" href="/Experiments/RandomBackground/index.html">Random background</a>
+        <a class="w3-bar-item w3-button" href="/Experiments/SimonSays/index.html">Simon says</a>
+        
+    </div>
+
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeSetting()">&times;</a>
+<div class="settings-container">
+        <div>
+            <div>Player Mode</div>
+        <input type="button" id="buttonMode" value="Two player">
+        </div>
+        <div>Delay of computer move: <span id="sliderOutput"></span>
+            <br>
+            <input type="range" value="0.5" id="compDelay" min="0" max="100">
+        </div>
+        <div>Show possible moves</div>
+        <div>
+        <input type="checkbox" id="possibleMoves">
+        <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
+        </div>
+        <div id="message-container"></div>
+        <div class="playerList" id="div"></div>
+        </div>
+    </div>
+
+
+
+    <h1>Draughts</h1>
+    <div class="grid">
+
+
+        <div class="mainGame">
+            <div>Player is <span id="player"></span></div>
+            <canvas id="canvas"></canvas>
+            <div hidden="true" id="win" class="centered box">
+                <div>Winner</div>
+            </div>
+            <div id="msg" class="message fade">Message</div>
+        </div>
+    </div>
 </body>
 </html>

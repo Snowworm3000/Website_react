@@ -1,3 +1,4 @@
+let playerIndicator = document.getElementById("player");
 let board = []
 createBoard()
 function createBoard(){ //Create array with 8 subarrays containing all 0s representing the board
@@ -40,6 +41,7 @@ let selectedPiece
 
 let currentPlayer = 2
 function input(x,y){
+    console.log(x,y,"hello x and y 🙏")
     let selectedColour = board[y][x]
     let currentPossiblePiece = getPossiblePieces(currentPlayer)
     if(currentPossiblePiece.includes(selectedColour) || selectedColour == 0){
@@ -105,25 +107,38 @@ function isOppositePiece(currentPiece,oppositePiece){
     return piece.includes(oppositePiece) == false
 }
 
-function isValidMove(locationFrom,locationTo){
+let middle
+function isValidMove(locationFrom,locationTo, captured = false, lastLocation){
+    if(captured){ // when the move is after a capture and they are not moving the same piece, it is not a capture.
+        if((lastLocation.x != locationFrom.x) && (lastLocation.y != locationFrom.y)){
+            console.log("invalid move 111 👉", lastLocation, locationFrom, captured)
+            return false
+        }
+    }
+    console.log("haven't returned yet")
     if(rightDirection(locationFrom,locationTo)){ // check if the piece is going in the correct direction
         if(checkInRange(locationFrom,locationTo,1)){ // if location is in range of 1, so a normal non capture jump
             if(board[locationTo.y][locationTo.x] == 0){
                 if(locationFrom.x != locationTo.x){
-                    return 1
+                    if(captured){
+                        console.log("non capture stopped")
+                        return false
+                    }else{
+                        return 1
+                    }
                 }
             }
         }else if(checkInRange(locationFrom,locationTo,2)){ // if location is in range of 2, so a capture move
             if(board[locationTo.y][locationTo.x] == 0){
                 if(Math.abs(locationFrom.x-locationTo.x) == 2 && Math.abs(locationFrom.y-locationTo.y) == 2){
-                    let middle = [mean(locationFrom.x,locationTo.x),mean(locationFrom.y,locationTo.y)]
+                    middle = [mean(locationFrom.x,locationTo.x),mean(locationFrom.y,locationTo.y)]
                     console.log(middle," middle ertety")
                     console.log(middle,board[middle[1]][middle[0]]," middle")
                     let middlePiece = board[middle[1]][middle[0]]
                     let currentPiece = board[locationFrom.y][locationFrom.x]
                     if(isOppositePiece(currentPiece,middlePiece)&&middlePiece!=0){ // check if the middle piece is the opposite piece to the current piece
                         console.log("possible capture")
-                        board[middle[1]][middle[0]] = 0; // capture piece
+                        // board[middle[1]][middle[0]] = 0; // capture piece
                         return 2
                     }
                     console.log("impossible capture",currentPiece,[2,1][currentPiece-1],middlePiece)
@@ -133,6 +148,10 @@ function isValidMove(locationFrom,locationTo){
     }
     
     return false
+}
+
+function capturePiece(middle){
+    board[middle[1]][middle[0]] = 0; // capture piece
 }
 
 function checkWin(board){
@@ -152,22 +171,67 @@ function checkWin(board){
     }
 }
 
+function checkForCaptureMove(locationFrom){
+    for(let i = -2; i<=2; i+= 4){
+            for(let j = -2; j<=2; j+= 4){
+            console.log(i,j)
+            let diffX = i 
+            let locationX = locationFrom.x + i
+            let locationY = locationFrom.y + j
+            console.log(locationX, locationY)
+            if((0 <= locationX && locationX < 8) && (0 <= locationY && locationY < 8)){ // check if location is on the board
+                console.log("on board") 
+                let isValid = isValidMove(locationFrom, {x:locationX, y:locationY})
+                if(isValid){
+                    return true
+                }
 
+            }else{
+                console.log("Not on board")
+            }
+        }
+    }
+    return false
+}
+
+let capture = false
+let captureLocationFrom
 function movePiece(locationFrom,locationTo){
-    let validMove = isValidMove(locationFrom,locationTo)
-    console.log(isValidMove(locationFrom,locationTo), " valid move")
+    console.log("locationfrom and to ", locationFrom, locationTo)
+    let validMove = isValidMove(locationFrom,locationTo,capture,captureLocationFrom)
+    console.log( validMove, " valid move")
     if(validMove){
         let counter = board[locationFrom.y][locationFrom.x]
         board[locationFrom.y][locationFrom.x] = 0
         if((counter == 1 && locationTo.y == 7) || (counter == 2 && locationTo.y == 0)){
             board[locationTo.y][locationTo.x] = [3,4][counter-1]
         }else{
+            console.log(counter, locationTo, locationFrom)
             board[locationTo.y][locationTo.x] = counter
         }
         if(validMove == 1){ // change player if the move was not a capture
+            // currentPlayer = (currentPlayer%2)+1
+            capture = false
+        }else{ //capture
+            capturePiece(middle)
+        }
+        // } else{ // capture
+        //     console.log("👊👊👊 capture")
+        //     capture = true
+        //     captureLocationFrom = locationTo
+        // }
+
+        if(checkForCaptureMove(locationTo) && capture){ //if there is another possible capture move and the player has already captured it is still their turn
+            console.log("👊👊👊 capture")
+            capture = true
+            captureLocationFrom = locationTo
+        }else{
+            console.log("🥶 not capture")
             currentPlayer = (currentPlayer%2)+1
+            capture = false
         }
     }
+    showPlayer()
 }
 
 
@@ -197,3 +261,12 @@ function getCursorPosition(canvas, event) {
     ySet = getLocation(y);
     input(xSet,ySet)
 }
+
+function showPlayer(){
+    if(currentPlayer == 1){
+        playerIndicator.innerHTML = "black"
+    }else{
+        playerIndicator.innerHTML = "red"
+    }
+}
+showPlayer()

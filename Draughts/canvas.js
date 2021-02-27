@@ -11,11 +11,11 @@ white.src='./White.svg';
 
 var blackT = new Image;
 blackT.onload = function(){ drawGridC() };
-blackT.src='./Tick.svg';
+blackT.src='./BlackT.svg';
 
 var whiteT = new Image;
 whiteT.onload = function(){ drawGridC() };
-whiteT.src='./TickW.svg';
+whiteT.src='./WhiteT.svg';
 
 canvas.addEventListener('mousedown', function(e) {
     getCursorPosition(canvas, e)
@@ -28,7 +28,7 @@ function drawGridC(){
 }
 
 function drawGrid(board){
-    ctx.fillStyle = "#008B61";
+    ctx.fillStyle = "#444";
     ctx.fillRect(0,0,canvas.width,canvas.height);
 
     ctx.strokeStyle = "#000";
@@ -36,6 +36,17 @@ function drawGrid(board){
     //let lineWidth = 10
     let gridSize = 8
     let lineWidth = (50/gridSize)*canvas.width/1000
+
+    let position = windowSize /gridSize
+    for(let i = 0; i<gridSize;i+=2){
+        for(let j = 0; j<gridSize;j++){
+            let multiplier = i + (j%2)
+            ctx.beginPath()
+            ctx.fillStyle = "#eee"
+            ctx.fillRect(position * multiplier, position * j, position,position)
+            ctx.stroke()
+        }
+    }
 
     for(let i = 1; i<gridSize;i++){
         ctx.beginPath();

@@ -34,6 +34,8 @@ function map(value, inputS, inputE, outputS, outputE){
 minS.addEventListener("input",move)
 maxS.addEventListener("input",move)
 
+let no =2
+
 move()
 function move(){
 console.log(minS.value,maxS.value)
@@ -51,12 +53,12 @@ for (let x = 0; x < width; x++){
         let n = 0;
 
         while (n < maxIterations){
-            let aa = a*a - b*b;
+            let aa = a ** no - b ** no;
             let bb = 2*a*b;
 
             a = aa + ca;
             b = bb + cb;
-            if (a * a + b * b > 16) {
+            if (a ** no + b ** no > 16) {
                 break;
               }
 
