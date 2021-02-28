@@ -1,4 +1,26 @@
 let playerIndicator = document.getElementById("player");
+const buttonPlayers = document.getElementById("buttonMode");
+let computerMoving = false
+
+let gameMode = 1;
+buttonPlayers.addEventListener("click",function(){
+    gameMode++
+    gameMode = gameMode % 2;
+    if(gameMode == 1){
+        buttonPlayers.value = "Two player";
+        restartGame()
+    }else{
+        buttonPlayers.value = "One player";
+        restartGame()
+    }
+})
+
+function restartGame(){
+    currentPlayer = 2
+    createBoard()
+    drawGridC()
+}
+
 let board = []
 createBoard()
 function createBoard(){ //Create array with 8 subarrays containing all 0s representing the board
@@ -41,7 +63,6 @@ let selectedPiece
 
 let currentPlayer = 2
 function input(x,y){
-    console.log(x,y,"hello x and y 🙏")
     let selectedColour = board[y][x]
     let currentPossiblePiece = getPossiblePieces(currentPlayer)
     if(currentPossiblePiece.includes(selectedColour) || selectedColour == 0){
@@ -53,9 +74,62 @@ function input(x,y){
             movePiece(selectedPiece,{x:x,y:y})
             selected = false
             console.log("piece moved",board[y][x])
+
+            if(gameMode == 0 && capture == false){
+                console.log("comp move")
+                compMove()
+            }
         }
         drawGridC()
     }
+    
+}
+
+let compSlider = document.getElementById("compDelay")
+let sliderOutput = document.getElementById("sliderOutput")
+let compDelay = compSlider.value/0.025
+sliderOutput.innerHTML = compDelay * 0.001
+
+compSlider.oninput = function(){
+    compDelay = this.value /0.025
+    sliderOutput.innerHTML = compDelay * 0.001
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function compMove(){
+    computerMoving = true;
+    await sleep(compDelay)
+    let possibleCompMoves = checkAllPossibleMoves();
+    if(possibleCompMoves.length == 0){
+        console.log("No moves available")
+    }else{
+        let choice;
+        let moveType
+        console.log(possibleCompMoves.capture.length , possibleCompMoves.move.length , '☺️')
+        console.log(possibleCompMoves)
+        if(possibleCompMoves.capture.length != 0){
+            choice = Math.round(random(possibleCompMoves.capture.length -1))
+            console.log("capture")
+            moveType = 'capture'
+        }else{
+            choice = Math.round(random(possibleCompMoves.move.length-1))
+            console.log("normal move")
+            moveType = "move"
+        }
+
+        moveChoice = possibleCompMoves[moveType][choice]
+        console.log(moveChoice)
+        movePiece(moveChoice[0],moveChoice[1])
+    
+        drawGridC()
+    }
+}
+
+function random(max){
+    return Math.random()*max
 }
 
 
@@ -64,10 +138,8 @@ function checkInRange(from,to,range){ // check if two values of x and y are in r
     for(let i=-range;i<=range;i++){
         for(let j=-range;j<=range;j++){
             if((Math.abs(j) == range || Math.abs(i) == range) == false){
-                console.log(j,i,range,"break")
                 continue
             }
-            console.log(i,j)
             result = from.x + i == to.x && from.y + j == to.y
             if(result){
                 return true
@@ -111,17 +183,14 @@ let middle
 function isValidMove(locationFrom,locationTo, captured = false, lastLocation){
     if(captured){ // when the move is after a capture and they are not moving the same piece, it is not a capture.
         if((lastLocation.x != locationFrom.x) && (lastLocation.y != locationFrom.y)){
-            console.log("invalid move 111 👉", lastLocation, locationFrom, captured)
             return false
         }
     }
-    console.log("haven't returned yet")
     if(rightDirection(locationFrom,locationTo)){ // check if the piece is going in the correct direction
         if(checkInRange(locationFrom,locationTo,1)){ // if location is in range of 1, so a normal non capture jump
             if(board[locationTo.y][locationTo.x] == 0){
                 if(locationFrom.x != locationTo.x){
                     if(captured){
-                        console.log("non capture stopped")
                         return false
                     }else{
                         return 1
@@ -132,16 +201,12 @@ function isValidMove(locationFrom,locationTo, captured = false, lastLocation){
             if(board[locationTo.y][locationTo.x] == 0){
                 if(Math.abs(locationFrom.x-locationTo.x) == 2 && Math.abs(locationFrom.y-locationTo.y) == 2){
                     middle = [mean(locationFrom.x,locationTo.x),mean(locationFrom.y,locationTo.y)]
-                    console.log(middle," middle ertety")
-                    console.log(middle,board[middle[1]][middle[0]]," middle")
                     let middlePiece = board[middle[1]][middle[0]]
                     let currentPiece = board[locationFrom.y][locationFrom.x]
                     if(isOppositePiece(currentPiece,middlePiece)&&middlePiece!=0){ // check if the middle piece is the opposite piece to the current piece
-                        console.log("possible capture")
                         // board[middle[1]][middle[0]] = 0; // capture piece
                         return 2
                     }
-                    console.log("impossible capture",currentPiece,[2,1][currentPiece-1],middlePiece)
                 }
             }
         }
@@ -171,42 +236,76 @@ function checkWin(board){
     }
 }
 
-function checkForCaptureMove(locationFrom){
-    for(let i = -2; i<=2; i+= 4){
-            for(let j = -2; j<=2; j+= 4){
-            console.log(i,j)
+function checkAllPossibleMoves(){
+    let b=0
+    let possibleMoves = {capture:[], move:[]}
+    for(let a=0; a<boardS; a+=2){
+        for(let x=0; x<boardS; x++){
+            let y = a + (x%2)
+            // if(board[x][y] != 0 && board[x][y] == (currentPlayer%2)+1){
+            if(board[y][x] != 0 && board[y][x] == currentPlayer){
+                console.log(currentPlayer, "current player")
+                console.log(x,y,board[y][x])
+                let move = checkForMove({x:x,y:y},1,true)
+                let capture = checkForMove({x:x,y:y},2,true)
+                if(move != false){
+                    for(i of move){
+                        possibleMoves.move.push([{x:x,y:y},i])
+                    }
+                }
+                if(capture != false){
+                    console.log('capture 😒')
+                    for(i of capture){
+                        possibleMoves.capture.push([{x:x,y:y},i])
+                    }
+                }
+            }
+
+
+            b++
+        }
+    }
+    console.log(b,"b")
+    return possibleMoves
+}
+
+function checkForMove(locationFrom, distance,comp = false){ //check for capture or move
+    let possibleMoves = []
+    for(let i = -distance; i<=distance; i+= distance*2){
+            for(let j = -distance; j<=distance; j+= distance*2){
             let diffX = i 
             let locationX = locationFrom.x + i
             let locationY = locationFrom.y + j
-            console.log(locationX, locationY)
             if((0 <= locationX && locationX < 8) && (0 <= locationY && locationY < 8)){ // check if location is on the board
-                console.log("on board") 
                 let isValid = isValidMove(locationFrom, {x:locationX, y:locationY})
                 if(isValid){
-                    return true
+                    if(comp){
+                        possibleMoves.push({x:locationX,y:locationY})
+                    }else{
+                        return true
+                    }
                 }
 
-            }else{
-                console.log("Not on board")
             }
         }
     }
-    return false
+    if(comp && possibleMoves != []){
+        return possibleMoves
+    }else{
+        return false
+    }
 }
 
 let capture = false
 let captureLocationFrom
 function movePiece(locationFrom,locationTo){
-    console.log("locationfrom and to ", locationFrom, locationTo)
     let validMove = isValidMove(locationFrom,locationTo,capture,captureLocationFrom)
-    console.log( validMove, " valid move")
     if(validMove){
         let counter = board[locationFrom.y][locationFrom.x]
         board[locationFrom.y][locationFrom.x] = 0
         if((counter == 1 && locationTo.y == 7) || (counter == 2 && locationTo.y == 0)){
             board[locationTo.y][locationTo.x] = [3,4][counter-1]
         }else{
-            console.log(counter, locationTo, locationFrom)
             board[locationTo.y][locationTo.x] = counter
         }
         if(validMove == 1){ // change player if the move was not a capture
@@ -214,6 +313,7 @@ function movePiece(locationFrom,locationTo){
             capture = false
         }else{ //capture
             capturePiece(middle)
+            capture = true
         }
         // } else{ // capture
         //     console.log("👊👊👊 capture")
@@ -221,7 +321,7 @@ function movePiece(locationFrom,locationTo){
         //     captureLocationFrom = locationTo
         // }
 
-        if(checkForCaptureMove(locationTo) && capture){ //if there is another possible capture move and the player has already captured it is still their turn
+        if(checkForMove(locationTo,2) && capture){ //if there is another possible capture move and the player has already captured it is still their turn
             console.log("👊👊👊 capture")
             capture = true
             captureLocationFrom = locationTo

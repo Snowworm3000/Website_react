@@ -35,7 +35,7 @@
     
     <header>
         <div class="topLeft">
-        <a class="active home" href="/index.html">Home</a>
+            <img id="cog" src="cog.svg" onclick="openSetting()">
         </div>
         <div class="centerDiv">
             <img 
@@ -73,10 +73,8 @@
             <br>
             <input type="range" value="0.5" id="compDelay" min="0" max="100">
         </div>
-        <div>Show possible moves</div>
         <div>
-        <input type="checkbox" id="possibleMoves">
-        <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();">
+        <!-- <input type="button" value="multiplayer" id="multiplayer" onclick="multiplayer();"> -->
         </div>
         <div id="message-container"></div>
         <div class="playerList" id="div"></div>

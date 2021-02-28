@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="70.764038mm"
+   height="70.763557mm"
+   viewBox="0 0 250.73872 250.73702"
+   id="svg5332"
+   version="1.1"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="cog.svg">
+  <title
+     id="title5886">Cog 2</title>
+  <defs
+     id="defs5334" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.5941406"
+     inkscape:cx="21.684647"
+     inkscape:cy="116.20308"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5337">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Cog 2</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Josh &quot;Cheeseness&quot; Bush</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Originally created for the official shirt for the 2014 Open Source Developers' Conference held at Griffith University.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cog gear</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:date>2014-10-22</dc:date>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-306.54324,-429.63923)">
+    <path
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3;marker:none;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 468.77898,429.70405 c -16.91471,-1.45412 -4.61037,22.03625 -37.32518,22.18086 -38.77331,0.17186 -14.60107,-33.03255 -50.35716,-18.03582 -35.75604,14.99731 4.87118,21.02621 -22.42448,48.5652 -27.29502,27.53846 -33.68647,-13.0369 -48.36576,22.85098 -14.67919,35.8879 18.30985,11.4258 18.48166,50.19952 0.17186,38.77314 -33.03215,14.60069 -18.03563,50.35705 14.99653,35.75635 21.02559,-4.86645 48.56366,22.42934 27.53868,27.29583 -13.03104,33.68253 22.85644,48.36186 35.88757,14.67934 11.42577,-18.31005 50.19847,-18.48196 38.77341,-0.17185 14.60108,33.03254 50.35717,18.03582 35.75598,-14.99672 -4.87108,-21.0262 22.42443,-48.56461 27.29501,-27.53846 33.68692,13.03159 48.36621,-22.8563 14.67929,-35.88788 -18.31031,-11.42048 -18.48212,-50.19421 -0.17181,-38.77372 33.03271,-14.60598 18.03618,-50.36235 -14.99652,-35.75635 -21.02608,4.87117 -48.56416,-22.42462 -27.53873,-27.29524 13.03114,-33.68252 -22.85649,-48.36127 -5.60781,-2.29415 -9.74095,-3.42605 -12.87324,-3.69949 z m -30.92251,56.16118 c 18.10083,1.55608 35.4495,10.55399 47.14828,24.45356 11.69887,13.89958 17.60369,32.52955 16.04759,50.6306 -1.5561,18.10104 -10.55391,35.44986 -24.45342,47.14882 -13.89941,11.69897 -32.52924,17.60391 -50.63008,16.04783 -18.10093,-1.55609 -35.4495,-10.55399 -47.14838,-24.45357 -11.69887,-13.89959 -17.60369,-32.52955 -16.04759,-50.63059 1.5561,-18.10105 10.55391,-35.44988 24.45342,-47.14884 13.89951,-11.69896 32.52924,-17.60389 50.63018,-16.04781 z"
+       id="path4236"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="csssssssssssssssccsssssssss" />
+  </g>
+</svg>
