@@ -1,0 +1,29 @@
+.site{
+    color: white;
+    flex: 1 1 auto;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: grey;
+    /* background-color: #3165e1; */
+    background-image: linear-gradient(180deg,rgb(99, 141, 204), rgb(28, 70, 185) 95%);
+    /* background-color: #13A89A; */
+    box-shadow: 1px 1px 10px #424242;
+    margin: 5px;
+    transition: box-shadow 0.2s;
+}
+
+.site:hover{
+    box-shadow: 0 0 10px rgb(0, 0, 0);;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4%;
+}
+
+.center{
+    text-align:center;
+}

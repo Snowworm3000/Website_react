@@ -1,0 +1,21 @@
+.box {
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.category{
+    margin: 5px;
+    border-bottom: solid;
+    border-color: grey;
+    border-width: 5px;
+}
+
+.center{
+    text-align:center;
+}
+
+.bg{
+    color: rgb(56, 56, 56);
+}

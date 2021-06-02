@@ -1,0 +1,65 @@
+.sidebar{ 
+    transition: 0.4s;
+    right: -1px;
+    top: 0;
+    height: 100%;
+    width: 0;
+    position: fixed !important;
+    z-index: 1;
+    overflow: hidden;
+    background-color: rgba(34, 34, 34, 0.9) !important;
+    color: white;
+    box-shadow: #000 0 0 10px;
+    border-right: 1px solid #ccc;
+    font-size: 20px;
+  }
+
+  .sidebar p{
+    color: white;
+    cursor: default;
+  }
+
+  .w3_bar_block .w3_bar_item{
+    width: 100%;
+    display: block;
+    padding: 8px 16px;
+    text-align: left;
+    border: none;
+    white-space: normal;
+    float: none;
+    outline: 0;
+    background-color: #0000;
+}
+
+
+.w3_btn, .w3_button{
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.w3_btn, .w3_button {
+    border: none;
+    display: inline-block;
+    padding: 8px 16px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration: none;
+    color: rgb(206, 206, 206);
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .w3_button:hover {
+    color:#000 !important;
+    background-color: #ccc !important;
+  }
+
+  .closebtn{
+    text-align: right;
+}

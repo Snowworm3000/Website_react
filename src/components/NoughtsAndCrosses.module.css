@@ -1,0 +1,19 @@
+.mainGame{
+    display: flex;
+    background-color: #14bdac;
+}
+
+.mainGame img{
+    width: 100px;
+}
+  
+.mainGame p{
+    font-size: 5vw;
+}
+  
+.centerFlex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
