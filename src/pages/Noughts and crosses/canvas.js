@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react'
 
 const Canvas = props => {
   
-  const { draw, getCursorPosition, ...rest } = props
+  const { draw, listener, ...rest } = props
   const canvasRef = useRef(null)
   
   useEffect(() => {
@@ -13,7 +13,7 @@ const Canvas = props => {
     let frameCount = 0
     let animationFrameId
     canvas.addEventListener('mousedown', function(e) {
-        getCursorPosition(context, e)
+        listener(canvasRef, context, e)
     })
     
     draw(context, canvas)
